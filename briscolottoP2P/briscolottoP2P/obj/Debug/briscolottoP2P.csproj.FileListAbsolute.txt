@@ -1,0 +1,15 @@
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\bin\Debug\briscolottoP2P.exe.config
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\bin\Debug\briscolottoP2P.exe
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\bin\Debug\briscolottoP2P.pdb
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\briscolottoP2P.csproj.AssemblyReference.cache
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\MainWindow.g.cs
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\App.g.cs
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\briscolottoP2P_MarkupCompile.cache
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\briscolottoP2P_MarkupCompile.lref
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\MainWindow.baml
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\briscolottoP2P.g.resources
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\briscolottoP2P.Properties.Resources.resources
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\briscolottoP2P.csproj.GenerateResource.cache
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\briscolottoP2P.csproj.CoreCompileInputs.cache
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\briscolottoP2P.exe
+R:\Desktop\5°C\Github\briscolottoP2P\briscolottoP2P\briscolottoP2P\obj\Debug\briscolottoP2P.pdb
