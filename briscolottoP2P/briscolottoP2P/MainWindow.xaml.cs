@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,9 +23,18 @@ namespace briscolottoP2P
     /// </summary>
     public partial class MainWindow : Window
     {
+        GestioneBriscola gestione;
+        GestioneRicezione ricezione;
+        GestioneInvio invio;
         public MainWindow()
         {
             InitializeComponent();
+            gestione = new GestioneBriscola(this);
+            ricezione = new GestioneRicezione();
+            invio = new GestioneInvio();
+
+            //avvio thread ricezione
+            ricezione.startaThread();
         }
     }
 }

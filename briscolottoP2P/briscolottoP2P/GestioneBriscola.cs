@@ -18,6 +18,12 @@ namespace briscolottoP2P
         }
         //VARIABILI
 
+        //indica lo stato della connessione attuale
+        //  0 -> nessuna connessione attiva, in attesa
+        //  1 -> inviata richiesta connessione, in attesa di risposta
+        //  2 -> connessione avviata
+        public int statoConnessione;
+
 
 
         public GestioneBriscola(MainWindow w)

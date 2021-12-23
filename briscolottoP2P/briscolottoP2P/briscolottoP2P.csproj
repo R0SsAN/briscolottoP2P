@@ -65,6 +65,8 @@
     </Compile>
     <Compile Include="Carta.cs" />
     <Compile Include="GestioneBriscola.cs" />
+    <Compile Include="GestioneInvio.cs" />
+    <Compile Include="GestioneRicezione.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
