@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace briscolottoP2P
 {
-    class GestioneBriscola
+    public class GestioneBriscola
     {
         //singleton
         static GestioneBriscola _instance = null;
@@ -17,6 +17,14 @@ namespace briscolottoP2P
             return _instance;
         }
         //VARIABILI
+
+        GestioneInvio invio;
+
+        //mazzo contenente tutte le carte
+        Mazzo mazzo;
+
+        //interfaccia per poter modificare la grafica
+        MainWindow interfaccia;
 
         //indica lo stato della connessione attuale
         //  0 -> nessuna connessione attiva, in attesa
@@ -33,7 +41,19 @@ namespace briscolottoP2P
 
         public GestioneBriscola(MainWindow w)
         {
-
+            invio = GestioneInvio.getInstance();
+            mazzo = new Mazzo();
+            statoConnessione = 0;
+            nomeLocal = "peer";
+            nomeRemote = "peer";
+            ipDestinatario = "";
+            interfaccia = w;
+        }
+        public void inviaMazzo()
+        {
+            mazzo = new Mazzo();
+            mazzo.randomizzaMazzo();
+            invio.inviaMazzo(mazzo.mazzo);
         }
 
 

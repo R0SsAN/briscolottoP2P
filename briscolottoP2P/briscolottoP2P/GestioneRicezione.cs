@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace briscolottoP2P
 {
-    class GestioneRicezione
+    public class GestioneRicezione
     {
         GestioneBriscola gestioneBriscola;
         GestioneInvio invio;

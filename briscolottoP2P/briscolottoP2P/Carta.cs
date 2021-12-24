@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace briscolottoP2P
 {
-    class Carta
+    public class Carta
     {
         public string seme { get; set; }
         public int valore { get; set; }
