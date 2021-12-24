@@ -29,9 +29,9 @@ namespace briscolottoP2P
         public MainWindow()
         {
             InitializeComponent();
-            gestione = new GestioneBriscola(this);
+            gestione = GestioneBriscola.getInstance(this);
+            invio = GestioneInvio.getInstance();
             ricezione = new GestioneRicezione();
-            invio = new GestioneInvio();
 
             //avvio thread ricezione
             ricezione.startaThread();

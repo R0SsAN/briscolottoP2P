@@ -20,11 +20,16 @@ namespace briscolottoP2P
 
         //indica lo stato della connessione attuale
         //  0 -> nessuna connessione attiva, in attesa
-        //  1 -> inviata richiesta connessione, in attesa di risposta
-        //  2 -> connessione avviata
+        //  1 -> inviata richiesta connessione, in attesa di risposta dal destinatario
+        //  2 -> ricevuta richiesta connessione, inviata conferma e in attesa di risposta dal mittente
+        //  3 -> connessione avviata
         public int statoConnessione;
 
+        //variabili che contengono il nome del giocatore local e di quello remoto con cui stà giocando
+        public string nomeLocal;
+        public string nomeRemote;
 
+        public string ipDestinatario;
 
         public GestioneBriscola(MainWindow w)
         {
