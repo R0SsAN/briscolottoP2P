@@ -18,13 +18,14 @@ namespace briscolottoP2P
         }
         //VARIABILI
 
-        GestioneInvio invio;
+        public GestioneInvio invio;
+        public GestioneRicezione ricezione;
 
         //mazzo contenente tutte le carte
-        Mazzo mazzo;
+        public Mazzo mazzo;
 
         //interfaccia per poter modificare la grafica
-        MainWindow interfaccia;
+        public MainWindow interfaccia;
 
         //indica lo stato della connessione attuale
         //  0 -> nessuna connessione attiva, in attesa
@@ -39,9 +40,10 @@ namespace briscolottoP2P
 
         public string ipDestinatario;
 
-        public GestioneBriscola(MainWindow w)
+        private GestioneBriscola(MainWindow w)
         {
             invio = GestioneInvio.getInstance();
+            ricezione = GestioneRicezione.getInstance();
             mazzo = new Mazzo();
             statoConnessione = 0;
             nomeLocal = "peer";
@@ -49,6 +51,24 @@ namespace briscolottoP2P
             ipDestinatario = "";
             interfaccia = w;
         }
+        public void avvioPartitaMazziere()
+        {
+            //in questo caso sono il mazziere quindi invio il mazzo e aspetto la sua conferma
+            inviaMazzo();
+            ricezione.waitConfermaMazzo();
+            //dopo aver ricevuto la conferma di ricezione del mazzo l'altro giocatore inizia la giocata
+
+        }
+        public void avvioPartitaGiocatore()
+        {
+            //in questo caso sono il primo giocatore quindi ricevo il mazzo dal mazziere
+            List<Carta> temp = ricezione.riceviMazzo();
+            mazzo.sincronizzaMazzo(temp);
+            //dopo averlo ricevuto invio conferma al mazziere
+            invio.invioGenerico(ipDestinatario, "m;y;");
+            //inizio giocata
+        }
+
         public void inviaMazzo()
         {
             mazzo = new Mazzo();

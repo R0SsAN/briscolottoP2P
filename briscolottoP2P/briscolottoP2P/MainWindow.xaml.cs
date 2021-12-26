@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,10 +28,19 @@ namespace briscolottoP2P
             InitializeComponent();
             gestione = GestioneBriscola.getInstance(this);
             invio = GestioneInvio.getInstance();
-            ricezione = new GestioneRicezione();
+            ricezione = GestioneRicezione.getInstance();
+            invio.caricaGestione();
+            ricezione.caricaGestione();
 
             //avvio thread ricezione
             ricezione.startaThread();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            gestione.ipDestinatario = text.Text;
+            invio.richiediConnessione(gestione.ipDestinatario);
+            gestione.statoConnessione = 1;
         }
     }
 }

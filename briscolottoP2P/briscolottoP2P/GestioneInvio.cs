@@ -20,13 +20,16 @@ namespace briscolottoP2P
                 _instance = new GestioneInvio();
             return _instance;
         }
-        public GestioneInvio()
+        private GestioneInvio()
         {
-            gestioneBriscola = GestioneBriscola.getInstance(null);
             client = new UdpClient();
             portaInvio = 12345;
         }
-        public void invioGenerico(string ip,string invio)
+        public void caricaGestione()
+        {
+            gestioneBriscola = GestioneBriscola.getInstance(null);
+        }
+        public void invioGenerico(string ip, string invio)
         {
             byte[] buffer = Encoding.ASCII.GetBytes(invio);
             client.Send(buffer, buffer.Length, ip, portaInvio);
@@ -42,10 +45,10 @@ namespace briscolottoP2P
             string invio = "m;";
             for (int i = 0; i < mazzo.Count; i++)
             {
-                invio += mazzo[i].seme + ";" + mazzo[i].valore + ";";
+                invio += mazzo[i].valore + "," + mazzo[i].seme + ";";
             }
             byte[] buffer = Encoding.ASCII.GetBytes(invio);
-            client.Send(buffer, buffer.Length,gestioneBriscola.ipDestinatario, portaInvio);
+            client.Send(buffer, buffer.Length, gestioneBriscola.ipDestinatario, portaInvio);
         }
     }
 }

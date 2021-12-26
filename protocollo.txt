@@ -9,7 +9,7 @@ porta invio random porta che riceve 12345.
 salviamo porte, indirizzi, nome dell'avversario.
 -P che invia a;... fa il mazziere
 -P1 invia mazzo mescolato: m;1,f;2,f;3,f;8,f;9,c;....4,q;ultima carta arrivata è la briscola (valore,seme;) rimuoviamo le carte dalla pos [0]
--P2 m;y; se non arriva si rinvia il mazzo dopo tot tempo
+-P2 m;y;
 3 volte{
 	-P1 rimuove mazzo[0], inserisce nelle sue carte e invia: p; P2 rimuove in auto 	carta avversario.
 	-P2 rimuove mazzo[0], inserisce nelle sue carte e invia: p; P1 rimuove in auto 	carta avversario.

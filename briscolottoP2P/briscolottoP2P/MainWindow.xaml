@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:briscolottoP2P"
         mc:Ignorable="d"
-        Title="MainWindow" Width="1280" Height="719.8">
+        Title="MainWindow" Height="594" Width="1083.091">
     <Grid>
-        
+        <Image HorizontalAlignment="Left" Height="155" Margin="486,67,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
+        <Image HorizontalAlignment="Left" Height="155" Margin="707,67,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
+        <Image HorizontalAlignment="Left" Height="155" Margin="419,342,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" RenderTransformOrigin="0.471,0.545"/>
+        <Image HorizontalAlignment="Left" Height="155" Margin="595,342,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
+        <Image HorizontalAlignment="Left" Height="155" Margin="774,342,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
+        <Image HorizontalAlignment="Left" Height="155" Margin="143,197,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90.152"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image HorizontalAlignment="Left" Height="155" Margin="89,196,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
+        <TextBox x:Name="text" HorizontalAlignment="Left" Height="23" Margin="57,458,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="228,462,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
     </Grid>
 </Window>

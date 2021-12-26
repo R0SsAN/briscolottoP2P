@@ -17,12 +17,23 @@ namespace briscolottoP2P
         GestioneInvio invio;
         UdpClient server;
         IPEndPoint endpoint;
-        public GestioneRicezione()
+
+        static GestioneRicezione _instance = null;
+        static public GestioneRicezione getInstance()
+        {
+            if (_instance == null)
+                _instance = new GestioneRicezione();
+            return _instance;
+        }
+        private GestioneRicezione()
+        {
+            invio = GestioneInvio.getInstance();
+            server = new UdpClient(12346);
+            endpoint = new IPEndPoint(IPAddress.Any, 0);
+        }
+        public void caricaGestione()
         {
             gestioneBriscola = GestioneBriscola.getInstance(null);
-            invio = GestioneInvio.getInstance();
-            server = new UdpClient(12345);
-            endpoint = new IPEndPoint(IPAddress.Any, 0);
         }
         public void startaThread()
         {
@@ -37,25 +48,32 @@ namespace briscolottoP2P
                 string[] split = Encoding.ASCII.GetString(ricezione).Split(';');
                 char scelta = split[0].ElementAt(0);
                 switch (scelta)
-                { 
+                {
                     case 'a':
                         {
                             //in questo caso ricevo da un altro peer la richiesta di connessione
-                            //visualizzo una messabox in cui chiedo se accettare o meno la richiesta
-                            MessageBoxResult result = MessageBox.Show("Richiesta connessione da: " + split[1] + ". \n Vuoi accettarla?", "Nuova richiesta connessione", MessageBoxButton.YesNo);
-                            switch (result)
+                            if(gestioneBriscola.statoConnessione==0)
                             {
-                                case MessageBoxResult.Yes:
-                                    //l'utente ha accettato la connessione quindi invio risposta al mittente
-                                    invio.invioGenerico(endpoint.Address.ToString(), "y;" + gestioneBriscola.nomeLocal+";");
-                                    gestioneBriscola.ipDestinatario = endpoint.Address.ToString();
-                                    gestioneBriscola.statoConnessione = 3;
-                                    break;
-                                case MessageBoxResult.No:
-                                    //l'utente non ha accettato la connessione quindi invio risposta negativa
-                                    invio.invioGenerico(endpoint.Address.ToString(), "n;");
-                                    gestioneBriscola.statoConnessione = 0;
-                                    break;
+                                //visualizzo una messabox in cui chiedo se accettare o meno la richiesta
+                                MessageBoxResult result = MessageBox.Show("Richiesta connessione da: " + split[1] + ". \n Vuoi accettarla?", "Nuova richiesta connessione", MessageBoxButton.YesNo);
+                                switch (result)
+                                {
+                                    case MessageBoxResult.Yes:
+                                        //l'utente ha accettato la connessione quindi invio risposta al mittente
+                                        invio.invioGenerico(endpoint.Address.ToString(), "y;" + gestioneBriscola.nomeLocal + ";");
+                                        gestioneBriscola.ipDestinatario = endpoint.Address.ToString();
+                                        gestioneBriscola.statoConnessione = 2;
+                                        break;
+                                    case MessageBoxResult.No:
+                                        //l'utente non ha accettato la connessione quindi invio risposta negativa
+                                        invio.invioGenerico(endpoint.Address.ToString(), "n;");
+                                        gestioneBriscola.statoConnessione = 0;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                invio.invioGenerico(endpoint.Address.ToString(), "n;");
                             }
                         }
                         break;
@@ -64,18 +82,26 @@ namespace briscolottoP2P
                         {
                             //in questo caso ci potrebbero essere due situazioni:
                             //  nel primo caso stò aspettando una risposta dal destinatario
-                            if(gestioneBriscola.statoConnessione==1)
+                            if (gestioneBriscola.statoConnessione == 1 && gestioneBriscola.ipDestinatario== endpoint.Address.ToString())
                             {
                                 //ho ricevuto una risposta positiva dal destinario, quindi mi salvo il suo nome e avvio la connessione
                                 gestioneBriscola.nomeRemote = split[1];
                                 invio.invioGenerico(gestioneBriscola.ipDestinatario, "y;");
                                 gestioneBriscola.statoConnessione = 3;
                                 //TODO : implementazione inizio partita
+                                gestioneBriscola.avvioPartitaMazziere();
+                                Console.WriteLine("gioca");
                             }
                             //  nel secondo caso sono invece il destinatario che stà aspettando la seconda conferma dal mittente
-                            else if(gestioneBriscola.statoConnessione==2)
+                            else if (gestioneBriscola.statoConnessione == 2 && gestioneBriscola.ipDestinatario == endpoint.Address.ToString())
                             {
                                 gestioneBriscola.statoConnessione = 3;
+                                gestioneBriscola.avvioPartitaGiocatore();
+                                Console.WriteLine("gioca");
+                            }
+                            else
+                            {
+                                invio.invioGenerico(endpoint.Address.ToString(), "n;");
                             }
                         }
                         break;
@@ -117,6 +143,42 @@ namespace briscolottoP2P
                         break;
                 }
             }
+        }
+        public void waitConfermaMazzo()
+        {
+            //aspetto la conferma di ricezione mazzo da parte del destinatario
+            string stringa;
+            do
+            {
+                byte[] ricezione = server.Receive(ref endpoint);
+                stringa = Encoding.ASCII.GetString(ricezione);
+
+                if (gestioneBriscola.ipDestinatario != endpoint.Address.ToString())
+                    invio.invioGenerico(endpoint.Address.ToString(), "n;");
+            }
+            while (stringa != "m;y;" && gestioneBriscola.ipDestinatario != endpoint.Address.ToString());
+        }
+        public List<Carta> riceviMazzo()
+        {
+            //aspetto la ricezione del mazzo da parte del mazziere
+            string[] split;
+            do
+            {
+                byte[] ricezione = server.Receive(ref endpoint);
+                split = Encoding.ASCII.GetString(ricezione).Split(';');
+
+                if (gestioneBriscola.ipDestinatario != endpoint.Address.ToString())
+                    invio.invioGenerico(endpoint.Address.ToString(), "n;");
+            }
+            while (split.Length != 42 || gestioneBriscola.ipDestinatario != endpoint.Address.ToString());
+            //ora che ho ricevuto il mazzo lo formatto in una lista di carte
+            List<Carta> carte = new List<Carta>();
+            for (int i = 1; i < split.Length; i++)
+            {
+                string[] temp = split[i].Split(',');
+                carte.Add(new Carta(temp[1], float.Parse(temp[0]), 0, ""));
+            }
+            return carte;
         }
     }
 }

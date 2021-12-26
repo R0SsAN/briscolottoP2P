@@ -9,11 +9,11 @@ namespace briscolottoP2P
     public class Carta
     {
         public string seme { get; set; }
-        public int valore { get; set; }
+        public float valore { get; set; }
         public int punteggio { get; set; }
         public string img { get; set; }
 
-        public Carta(string seme, int valore, int punteggio, string img)
+        public Carta(string seme, float valore,int punteggio, string img)
         {
             this.seme = seme;
             this.valore = valore;
