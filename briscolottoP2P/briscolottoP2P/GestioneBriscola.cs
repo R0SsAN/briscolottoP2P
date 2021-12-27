@@ -40,6 +40,15 @@ namespace briscolottoP2P
 
         public string ipDestinatario;
 
+
+        // lista carte in tavolo
+        List<Carta> carteTavolo;
+        // lista carte in mano
+        List<Carta> carteMano;
+        //lista carte vinte
+        List<Carta> carteVinte;
+
+
         private GestioneBriscola(MainWindow w)
         {
             invio = GestioneInvio.getInstance();
@@ -50,9 +59,14 @@ namespace briscolottoP2P
             nomeRemote = "peer";
             ipDestinatario = "";
             interfaccia = w;
+            carteTavolo = new List<Carta>();
+            carteMano = new List<Carta>();
+            carteVinte = new List<Carta>();
         }
         public void avvioPartitaMazziere()
         {
+
+            interfaccia.visibile();
             //in questo caso sono il mazziere quindi invio il mazzo e aspetto la sua conferma
             inviaMazzo();
             ricezione.waitConfermaMazzo();
@@ -61,6 +75,7 @@ namespace briscolottoP2P
         }
         public void avvioPartitaGiocatore()
         {
+            interfaccia.visibile();
             //in questo caso sono il primo giocatore quindi ricevo il mazzo dal mazziere
             List<Carta> temp = ricezione.riceviMazzo();
             mazzo.sincronizzaMazzo(temp);
@@ -76,6 +91,24 @@ namespace briscolottoP2P
             invio.inviaMazzo(mazzo.mazzo);
         }
 
+        public void calcoloPunti()
+        {
+            int temp = 0;
+            for (int i = 0; i < carteVinte.Count; i++)
+            {
+                temp += carteVinte[i].punteggio;
+            }
+            if(temp>60)
+            {
+                //viusalliza in label hai vinto
+            }else if(temp<60)
+            {
+                //viusalliza in label hai perso 
+            }else
+            {
+                //viusalliza in label hai pareggio
+            }
+        }
 
     }
 }

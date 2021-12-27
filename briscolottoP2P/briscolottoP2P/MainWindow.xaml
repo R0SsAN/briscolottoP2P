@@ -5,25 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:briscolottoP2P"
         mc:Ignorable="d"
-        Title="MainWindow" Height="594" Width="1083.091">
-    <Grid>
-        <Image HorizontalAlignment="Left" Height="155" Margin="486,67,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
-        <Image HorizontalAlignment="Left" Height="155" Margin="707,67,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
-        <Image HorizontalAlignment="Left" Height="155" Margin="419,342,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" RenderTransformOrigin="0.471,0.545"/>
-        <Image HorizontalAlignment="Left" Height="155" Margin="595,342,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
-        <Image HorizontalAlignment="Left" Height="155" Margin="774,342,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
-        <Image HorizontalAlignment="Left" Height="155" Margin="143,197,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" RenderTransformOrigin="0.5,0.5">
+        Title="MainWindow" Height="664.971" Width="1096.977">
+    <Grid x:Name="background" Margin="0,0,2,-5" OpacityMask="#FF046412" Background="#FF7BE87B">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Image x:Name="tavolo1" HorizontalAlignment="Left" Height="155" Margin="532,206,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" Visibility="Hidden"/>
+        <Image x:Name="tavolo2" HorizontalAlignment="Left" Height="155" Margin="720,206,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" Visibility="Hidden"/>
+        <Image x:Name="mia1" HorizontalAlignment="Left" Height="155" Margin="443,427,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" RenderTransformOrigin="0.471,0.545" Visibility="Hidden"/>
+        <TextBox x:Name="text" HorizontalAlignment="Left" Height="23" Margin="57,458,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="228,462,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Height="20"/>
+        <Image x:Name="briscola" HorizontalAlignment="Left" Height="155" Margin="181,238,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" RenderTransformOrigin="0.5,0.5" Visibility="Hidden">
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="90.152"/>
+                    <RotateTransform Angle="-90.018"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        <Image HorizontalAlignment="Left" Height="155" Margin="89,196,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif"/>
-        <TextBox x:Name="text" HorizontalAlignment="Left" Height="23" Margin="57,458,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="228,462,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Image x:Name="mia3" HorizontalAlignment="Left" Height="155" Margin="801,427,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" Visibility="Hidden"/>
+        <Image x:Name="mia2" HorizontalAlignment="Left" Height="155" Margin="621,427,0,0" VerticalAlignment="Top" Width="97" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/4b.gif" Visibility="Hidden"/>
+        <Image x:Name="mazzo" Margin="39,240,951,244" Source="back.gif" Stretch="Fill" RenderTransformOrigin="0.548,0.493" Visibility="Hidden"/>
+        <Image x:Name="avv3" Margin="801,10,189,474" Source="back.gif" Stretch="Fill" RenderTransformOrigin="0.548,0.493" Visibility="Hidden"/>
+        <Image x:Name="avv2" Margin="621,10,369,474" Source="back.gif" Stretch="Fill" RenderTransformOrigin="0.548,0.493" Visibility="Hidden"/>
+        <Image x:Name="avv1" Margin="443,10,547,475" Source="back.gif" Stretch="Fill" RenderTransformOrigin="0.548,0.493" Visibility="Hidden"/>
+        <Label Content="                     BRISCOLA" HorizontalAlignment="Left" Margin="244,10,0,0" VerticalAlignment="Top" Width="634" Height="55" FontSize="36"/>
+        <TextBox x:Name="lName" HorizontalAlignment="Left" Height="47" Margin="200,240,0,0" TextWrapping="Wrap" Text="Nickname" VerticalAlignment="Top" Width="220" FontSize="20"/>
+        <TextBox x:Name="lAvv" HorizontalAlignment="Left" Height="45" Margin="634,240,0,0" TextWrapping="Wrap" Text="IPavversario" VerticalAlignment="Top" Width="220" FontSize="20"/>
+        <Button x:Name="btnName" Content="conferma&#xD;&#xA;nickname" HorizontalAlignment="Left" Margin="200,314,0,0" VerticalAlignment="Top" Width="221" Height="47" FontSize="16" Click="btnName_Click"/>
+        <Button x:Name="btnRischiesta" Content="invia richiesta" HorizontalAlignment="Left" Margin="634,314,0,0" VerticalAlignment="Top" Width="220" Height="47" FontSize="16" Click="btnRischiesta_Click"/>
+        <Image x:Name="imgRisultato" HorizontalAlignment="Left" Height="459" Margin="200,123,0,0" VerticalAlignment="Top" Width="698" Visibility="Hidden"/>
     </Grid>
 </Window>
