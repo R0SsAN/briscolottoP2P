@@ -28,7 +28,7 @@ namespace briscolottoP2P
         private GestioneRicezione()
         {
             invio = GestioneInvio.getInstance();
-            server = new UdpClient(12346);
+            server = new UdpClient(12345);
             endpoint = new IPEndPoint(IPAddress.Any, 0);
         }
         public void caricaGestione()
@@ -38,6 +38,7 @@ namespace briscolottoP2P
         public void startaThread()
         {
             Thread t = new Thread(new ThreadStart(() => threadRicezione()));
+            t.IsBackground = true;
             t.Start();
         }
         public void threadRicezione()
@@ -52,7 +53,7 @@ namespace briscolottoP2P
                     case 'a':
                         {
                             //in questo caso ricevo da un altro peer la richiesta di connessione
-                            if(gestioneBriscola.statoConnessione==0)
+                            if (gestioneBriscola.statoConnessione == 0)
                             {
                                 //visualizzo una messabox in cui chiedo se accettare o meno la richiesta
                                 MessageBoxResult result = MessageBox.Show("Richiesta connessione da: " + split[1] + ". \n Vuoi accettarla?", "Nuova richiesta connessione", MessageBoxButton.YesNo);
@@ -67,7 +68,7 @@ namespace briscolottoP2P
                                     case MessageBoxResult.No:
                                         //l'utente non ha accettato la connessione quindi invio risposta negativa
                                         invio.invioGenerico(endpoint.Address.ToString(), "n;");
-                                        gestioneBriscola.statoConnessione = 0;
+                                        gestioneBriscola.interfaccia.annullaRichiesta();
                                         break;
                                 }
                             }
@@ -82,7 +83,7 @@ namespace briscolottoP2P
                         {
                             //in questo caso ci potrebbero essere due situazioni:
                             //  nel primo caso stò aspettando una risposta dal destinatario
-                            if (gestioneBriscola.statoConnessione == 1 && gestioneBriscola.ipDestinatario== endpoint.Address.ToString())
+                            if (gestioneBriscola.statoConnessione == 1 && gestioneBriscola.ipDestinatario == endpoint.Address.ToString())
                             {
                                 //ho ricevuto una risposta positiva dal destinario, quindi mi salvo il suo nome e avvio la connessione
                                 gestioneBriscola.nomeRemote = split[1];
@@ -109,37 +110,8 @@ namespace briscolottoP2P
                     case 'n':
                         {
                             //se ricevo n; in ogni caso devo ripristinare la connessione
-                            gestioneBriscola.statoConnessione = 0;
+                            gestioneBriscola.interfaccia.annullaRichiesta();
                         }
-                        break;
-
-                    case 'm':
-                        {
-                            if (gestioneBriscola.statoConnessione == 3)
-                            {
-
-                            }
-                        }
-                        break;
-
-                    case 'p':
-
-                        break;
-
-                    case 'b':
-
-                        break;
-
-                    case 'w':
-
-                        break;
-
-                    case 'l':
-
-                        break;
-
-                    case 'f':
-
                         break;
                 }
             }
@@ -173,12 +145,69 @@ namespace briscolottoP2P
             while (split.Length != 42 || gestioneBriscola.ipDestinatario != endpoint.Address.ToString());
             //ora che ho ricevuto il mazzo lo formatto in una lista di carte
             List<Carta> carte = new List<Carta>();
-            for (int i = 1; i < split.Length; i++)
+            for (int i = 1; i < split.Length - 1; i++)
             {
                 string[] temp = split[i].Split(',');
                 carte.Add(new Carta(temp[1], float.Parse(temp[0]), 0, ""));
             }
             return carte;
+        }
+        public void waitPresaCarta()
+        {
+            //aspetto la conferma che l'altro giocatore ha preso una carta dal mazzo, quando la ricevo la rimuovo anche io in modo da aggiornare il mazzo
+            string stringa;
+            do
+            {
+                byte[] ricezione = server.Receive(ref endpoint);
+                stringa = Encoding.ASCII.GetString(ricezione);
+
+                if (gestioneBriscola.ipDestinatario != endpoint.Address.ToString())
+                    invio.invioGenerico(endpoint.Address.ToString(), "n;");
+            }
+            while (stringa != "p;" && gestioneBriscola.ipDestinatario != endpoint.Address.ToString());
+            //metto un try catch in modo che alla fine della partita quando nno ci sono più carte nel mazzo non mi si interrompe il programma
+            try
+            {
+                gestioneBriscola.mazzo.sincronizzato.RemoveAt(0);
+            }
+            catch (Exception e)
+            { }
+
+        }
+        public Carta waitCartaGiocata()
+        {
+            //aspetto che l'altro giocatore mi mandi la carta
+            Carta temp;
+            string[] split;
+            do
+            {
+                byte[] ricezione = server.Receive(ref endpoint);
+                split = Encoding.ASCII.GetString(ricezione).Split(';');
+
+                if (gestioneBriscola.ipDestinatario != endpoint.Address.ToString())
+                    invio.invioGenerico(endpoint.Address.ToString(), "n;");
+            }
+            while (split[0] != "b;" && gestioneBriscola.ipDestinatario != endpoint.Address.ToString());
+            temp = new Carta(split[2], float.Parse(split[1]), 0, "");
+            return temp;
+        }
+        public bool waitEsitoGiocata()
+        {
+            string stringa;
+            do
+            {
+                byte[] ricezione = server.Receive(ref endpoint);
+                stringa = Encoding.ASCII.GetString(ricezione);
+
+                if (gestioneBriscola.ipDestinatario != endpoint.Address.ToString())
+                    invio.invioGenerico(endpoint.Address.ToString(), "n;");
+            }
+            while (stringa != "w;" && stringa != "l;" && gestioneBriscola.ipDestinatario != endpoint.Address.ToString());
+            //se ha vinto allora ritorno true
+            if (stringa == "w;")
+                return true;
+            //se ha perso ritorno false
+            return false;
         }
     }
 }

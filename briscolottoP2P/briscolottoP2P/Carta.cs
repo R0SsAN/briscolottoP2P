@@ -13,7 +13,7 @@ namespace briscolottoP2P
         public int punteggio { get; set; }
         public string img { get; set; }
 
-        public Carta(string seme, float valore,int punteggio, string img)
+        public Carta(string seme, float valore, int punteggio, string img)
         {
             this.seme = seme;
             this.valore = valore;
