@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +25,11 @@ namespace briscolottoP2P
         GestioneBriscola gestione;
         GestioneRicezione ricezione;
         GestioneInvio invio;
+
+        //variabile utilizzata per capire qualche carta è stata scelta
+        public int scelta;
+        public bool puoiPrendere;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,18 +38,14 @@ namespace briscolottoP2P
             ricezione = GestioneRicezione.getInstance();
             invio.caricaGestione();
             ricezione.caricaGestione();
+            scelta = -1;
+            puoiPrendere = false;
+            Invisibile();
 
             //avvio thread ricezione
             ricezione.startaThread();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            gestione.ipDestinatario = text.Text;
-            invio.richiediConnessione(gestione.ipDestinatario);
-            gestione.statoConnessione = 1;
-        }
-        
         public void Invisibile()
         {
             //rendiamo tutte le carte da gioco invisibili per la fase di connessione
@@ -56,14 +58,11 @@ namespace briscolottoP2P
                 mia3.Visibility = Visibility.Hidden;
                 tavolo1.Visibility = Visibility.Hidden;
                 tavolo2.Visibility = Visibility.Hidden;
-                avv1.Visibility = Visibility.Hidden;
-                avv2.Visibility = Visibility.Hidden;
-                avv3.Visibility = Visibility.Hidden;
                 mazzo.Visibility = Visibility.Hidden;
                 briscola.Visibility = Visibility.Hidden;
                 background.Background = (Brush)new BrushConverter().ConvertFrom("#FF7BE87B");
             }
-           
+
         }
         public void visibile()
         {
@@ -77,9 +76,6 @@ namespace briscolottoP2P
                 mia3.Visibility = Visibility.Visible;
                 tavolo1.Visibility = Visibility.Visible;
                 tavolo2.Visibility = Visibility.Visible;
-                avv1.Visibility = Visibility.Visible;
-                avv2.Visibility = Visibility.Visible;
-                avv3.Visibility = Visibility.Visible;
                 mazzo.Visibility = Visibility.Visible;
                 briscola.Visibility = Visibility.Visible;
                 background.Background = (Brush)new BrushConverter().ConvertFrom("#FF035703");
@@ -94,20 +90,45 @@ namespace briscolottoP2P
         {
             //aggiorno il nome del giocatore
             if (lName.Text != "")
-                gestione.nomeLocal = lName.Text;                          
+                gestione.nomeLocal = lName.Text;
         }
 
         private void btnRischiesta_Click(object sender, RoutedEventArgs e)
         {
-            //se l'ip è valido invia una rischiesta di connesione a quel indirizzo ip
-            IPAddress temp;
-            if (IPAddress.TryParse(lAvv.Text,out temp ))
+            if (gestione.statoConnessione == 0)
             {
-                gestione.ipDestinatario = lAvv.Text;
-                invio.richiediConnessione(lAvv.Text);
-                gestione.statoConnessione = 1;
+                //se l'ip è valido invia una rischiesta di connesione a quel indirizzo ip
+                IPAddress temp;
+                if (IPAddress.TryParse(lAvv.Text, out temp))
+                {
+                    gestione.ipDestinatario = lAvv.Text;
+                    invio.richiediConnessione(lAvv.Text);
+                    gestione.statoConnessione = 1;
+
+                    lName.IsEnabled = false;
+                    btnName.IsEnabled = false;
+                    lAvv.IsEnabled = false;
+                    btnRischiesta.Content = "Annulla richiesta";
+                }
             }
-                
+            //se invece cè già una richista incorso annullo la richiesta
+            else
+                annullaRichiesta();
+
+        }
+        public void annullaRichiesta()
+        {
+            if (!CheckAccess())
+                Dispatcher.Invoke(() => { annullaRichiesta(); });
+            else
+            {
+                gestione.statoConnessione = 0;
+                lName.IsEnabled = true;
+                btnName.IsEnabled = true;
+                lAvv.IsEnabled = true;
+                lAvv.Text = "";
+                btnRischiesta.Content = "Invia richiesta";
+            }
         }
 
         public void visualizzaRisultato(int a)
@@ -125,7 +146,7 @@ namespace briscolottoP2P
                     imgRisultato.Source = new BitmapImage(new Uri(""));
                     imgRisultato.Visibility = Visibility.Visible;
                 }
-                else if(a==0)
+                else if (a == 0)
                 {
                     imgRisultato.Source = new BitmapImage(new Uri(""));
                     imgRisultato.Visibility = Visibility.Visible;
@@ -135,6 +156,101 @@ namespace briscolottoP2P
                     imgRisultato.Source = new BitmapImage(new Uri(""));
                     imgRisultato.Visibility = Visibility.Visible;
                 }
+            }
+        }
+
+        private void mia1_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (puoiPrendere)
+                scelta = 0;
+        }
+        private void mia2_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (puoiPrendere)
+                scelta = 1;
+        }
+        private void mia3_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (puoiPrendere)
+                scelta = 2;
+        }
+        public void aggiornaCarte()
+        {
+            if (!CheckAccess())
+                Dispatcher.Invoke(() => { aggiornaCarte(); });
+            else
+            {
+                Thread.Sleep(250);
+                try
+                {
+                    mia1.Visibility = Visibility.Visible;
+                    mia1.Source = new BitmapImage(new Uri(gestione.carteMano[0].img));
+                }
+                catch (Exception e)
+                {
+                    mia1.Visibility = Visibility.Hidden;
+                }
+                try
+                {
+                    mia2.Visibility = Visibility.Visible;
+                    mia2.Source = new BitmapImage(new Uri(gestione.carteMano[1].img));
+                }
+                catch (Exception e)
+                {
+                    mia2.Visibility = Visibility.Hidden;
+                }
+                try
+                {
+                    mia3.Visibility = Visibility.Visible;
+                    mia3.Source = new BitmapImage(new Uri(gestione.carteMano[2].img));
+                }
+                catch (Exception e)
+                {
+                    mia3.Visibility = Visibility.Hidden;
+                }
+                try
+                {
+                    tavolo1.Visibility = Visibility.Visible;
+                    tavolo1.Source = new BitmapImage(new Uri(gestione.carteTavolo[0].img));
+                }
+                catch (Exception e)
+                {
+                    tavolo1.Visibility = Visibility.Hidden;
+                }
+                try
+                {
+                    tavolo2.Visibility = Visibility.Visible;
+                    tavolo2.Source = new BitmapImage(new Uri(gestione.carteTavolo[1].img));
+                }
+                catch (Exception e)
+                {
+                    tavolo2.Visibility = Visibility.Hidden;
+                }
+                try
+                {
+                    briscola.Visibility = Visibility.Visible;
+                    briscola.Source = new BitmapImage(new Uri(gestione.mazzo.sincronizzato[gestione.mazzo.sincronizzato.Count - 1].img));
+                }
+                catch (Exception e)
+                {
+                    briscola.Visibility = Visibility.Hidden;
+                }
+                if (gestione.mazzo.sincronizzato.Count < 1)
+                {
+                    mazzo.Visibility = Visibility.Hidden;
+                }
+            }
+        }
+        public void visualizzaTurno(bool check)
+        {
+            if (!CheckAccess())
+                Dispatcher.Invoke(() => { visualizzaTurno(check); });
+            else
+            {
+                if (check)
+                    lTurno.Visibility = Visibility.Visible;
+                else
+                    lTurno.Visibility = Visibility.Hidden;
             }
         }
     }

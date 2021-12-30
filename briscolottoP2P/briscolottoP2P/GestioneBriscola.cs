@@ -42,11 +42,11 @@ namespace briscolottoP2P
 
 
         // lista carte in tavolo
-        List<Carta> carteTavolo;
-        // lista carte in mano
-        List<Carta> carteMano;
+        public List<Carta> carteTavolo;
+        // vettore carte in mano, utilizzo un vettore invece di una lista per poter gestire correttamente la presa e l'inserimento per ogni giocata
+        public Carta[] carteMano;
         //lista carte vinte
-        List<Carta> carteVinte;
+        public List<Carta> carteVinte;
 
 
         private GestioneBriscola(MainWindow w)
@@ -60,7 +60,7 @@ namespace briscolottoP2P
             ipDestinatario = "";
             interfaccia = w;
             carteTavolo = new List<Carta>();
-            carteMano = new List<Carta>();
+            carteMano = new Carta[3];
             carteVinte = new List<Carta>();
         }
         public void avvioPartitaMazziere()
@@ -91,6 +91,45 @@ namespace briscolottoP2P
             invio.inviaMazzo(mazzo.mazzo);
         }
 
+        public string calcoloVincitaPerdita()
+        {
+            string invio = "";
+            Carta briscola = mazzo.briscola;
+            //questo metodo viene invocato dal secondo giocatore che calcola il vincitore della mano attuale
+            //come si calcola chi ha vinto:
+            // - se un giocatore butta una briscola e l'altro no, ha vinto il primo
+            // - se tutti e due i giocatori buttano una briscola vince quello con il valore più alto
+            // - se i giocatori giocano una carta dello stesso seme vince quello con il valore più alto
+            // - se i giocatori giocano due semi diversi non briscola vince chi ha giocato la mano per primo
+
+            //in questo caso il primo giocatore ha buttato una carta di briscola mentre il secondo no, vince il primo
+            if (briscola.seme == carteTavolo[0].seme && briscola.seme != carteTavolo[1].seme)
+                invio = "w;";
+            //in questo caso il secondo giocatore ha buttato una carta di briscola mentre il primo no, vince il secondo
+            else if (briscola.seme != carteTavolo[0].seme && briscola.seme == carteTavolo[1].seme)
+                invio = "l;";
+            //in questo caso tutti e due i giocatori hanno buttato una briscola, quindi vince quello con il valore più alto
+            else if (briscola.seme == carteTavolo[0].seme && briscola.seme == carteTavolo[1].seme)
+            {
+                if (carteTavolo[0].valore > carteTavolo[1].valore)
+                    invio = "w;";
+                else if (carteTavolo[0].valore < carteTavolo[1].valore)
+                    invio = "l;";
+            }
+            //in questo caso tutti e due i giocatori hanno buttato una carta seme non briscola, vince quello con il valore più alto
+            else if (carteTavolo[1].seme == carteTavolo[1].seme && briscola.seme != carteTavolo[0].seme)
+            {
+                if (carteTavolo[0].valore > carteTavolo[1].valore)
+                    invio = "w;";
+                else if (carteTavolo[0].valore < carteTavolo[1].valore)
+                    invio = "l;";
+            }
+            //in questo caso le due carte sono di semi diversi, vince il primo giocatore
+            else if (carteTavolo[1].seme != carteTavolo[1].seme && briscola.seme != carteTavolo[0].seme)
+                invio = "w;";
+
+            return invio;
+        }
         public void calcoloPunti()
         {
             int temp = 0;
@@ -98,17 +137,40 @@ namespace briscolottoP2P
             {
                 temp += carteVinte[i].punteggio;
             }
-            if(temp>60)
+            if (temp > 60)
             {
                 //viusalliza in label hai vinto
-            }else if(temp<60)
+            }
+            else if (temp < 60)
             {
                 //viusalliza in label hai perso 
-            }else
+            }
+            else
             {
                 //viusalliza in label hai pareggio
             }
         }
-
+        public int getNCarteMano()
+        {
+            int num = 0;
+            for (int i = 0; i < carteMano.Length; i++)
+            {
+                if (carteMano[i] != null)
+                    num++;
+            }
+            return num;
+        }
+        public void inserisciCartaManoInPos(Carta carta, int pos)
+        {
+            //uso questo metodo per poter inserire nel vettore delle carte in mano le nuove carta
+            // se gli passo pos=-1 vuol dire che voglio inserire alla prima posizione disponibile (usato per il pescaggio iniziale)
+            // se gli passo una posizione specifica vuol dire che voglio inserire in quella posizione (usato per l'inserimento delle carte alla fine di ogni mano)
+            if (pos == -1)
+                carteMano[getNCarteMano()] = carta;
+            else
+            {
+                carteMano[pos] = carta;
+            }
+        }
     }
 }
