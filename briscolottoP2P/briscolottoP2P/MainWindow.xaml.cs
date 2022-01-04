@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -60,6 +61,12 @@ namespace briscolottoP2P
                 tavolo2.Visibility = Visibility.Hidden;
                 mazzo.Visibility = Visibility.Hidden;
                 briscola.Visibility = Visibility.Hidden;
+                nick.Visibility = Visibility.Visible;
+                ip.Visibility = Visibility.Visible;
+                lName.Visibility = Visibility.Visible;
+                lAvv.Visibility = Visibility.Visible;
+                btnName.Visibility = Visibility.Visible;
+                btnRischiesta.Visibility = Visibility.Visible;
                 background.Background = (Brush)new BrushConverter().ConvertFrom("#FF7BE87B");
             }
 
@@ -83,6 +90,8 @@ namespace briscolottoP2P
                 lAvv.Visibility = Visibility.Hidden;
                 btnName.Visibility = Visibility.Hidden;
                 btnRischiesta.Visibility = Visibility.Hidden;
+                nick.Visibility = Visibility.Hidden;
+                ip.Visibility = Visibility.Hidden;
             }
         }
 
@@ -251,6 +260,96 @@ namespace briscolottoP2P
                     lTurno.Visibility = Visibility.Visible;
                 else
                     lTurno.Visibility = Visibility.Hidden;
+            }
+        }
+        private void bNuova_Click(object sender, RoutedEventArgs e)
+        {
+            Invisibile();
+            //resetto la ricezione in modo da creare un nuovo thread per la nuova partita
+            ricezione = new GestioneRicezione();
+            ricezione.startaThread();
+            //resetto anche la gestione partita
+            gestione.statoConnessione = 0;
+            bNuova.Visibility = Visibility.Hidden;
+        }
+        public void animazionePesca(int n)
+        {
+            if (!CheckAccess())
+                Dispatcher.Invoke(() => { animazionePesca(n); });
+            else
+            {
+                double newLeft = 0;
+                double newTop = 447;
+                if (n == 0)
+                    newLeft = 441;
+                else if (n == 1)
+                    newLeft = 619;
+                else if (n == 2)
+                    newLeft = 799;
+
+                imgAnimazione.Visibility = Visibility.Visible;
+                Random rnd = new Random();
+                //Create the animations for left and top
+                DoubleAnimation animLeft = new DoubleAnimation(Canvas.GetLeft(imgAnimazione), newLeft, new Duration(TimeSpan.FromSeconds(1)));
+                DoubleAnimation animTop = new DoubleAnimation(Canvas.GetTop(imgAnimazione), newTop, new Duration(TimeSpan.FromSeconds(1)));
+
+                //Set an easing function so the button will quickly move away, then slow down
+                //as it reaches its destination.
+                animLeft.EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut };
+                animTop.EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut };
+
+                //Start the animation.
+                imgAnimazione.BeginAnimation(Canvas.LeftProperty, animLeft, HandoffBehavior.SnapshotAndReplace);
+                imgAnimazione.BeginAnimation(Canvas.TopProperty, animTop, HandoffBehavior.SnapshotAndReplace);
+            }
+        }
+        public void animazioneButta(string path)
+        {
+            if (!CheckAccess())
+                Dispatcher.Invoke(() => { animazioneButta(path); });
+            else
+            {
+                //imposto posizione finale dell'animazione
+                double newLeft = 0;
+                double newTop = 161;
+                if (gestione.carteTavolo.Count == 0)
+                    newLeft = 518;
+                else if (gestione.carteTavolo.Count == 1)
+                    newLeft = 709;
+                //imposto posizione iniziale dell'animazione
+                Canvas.SetTop(imgAnimazione, 447);
+                if (scelta == 0)
+                {
+                    mia1.Source = null;
+                    Canvas.SetLeft(imgAnimazione, 441);
+                }
+                else if (scelta == 1)
+                {
+                    mia2.Source = null;
+                    Canvas.SetLeft(imgAnimazione, 619);
+                }
+                else if (scelta == 2)
+                {
+                    mia3.Source = null;
+                    Canvas.SetLeft(imgAnimazione, 799);
+                }
+
+
+                imgAnimazione.Source = new BitmapImage(new Uri(path));
+                imgAnimazione.Visibility = Visibility.Visible;
+                Random rnd = new Random();
+                //Create the animations for left and top
+                DoubleAnimation animLeft = new DoubleAnimation(Canvas.GetLeft(imgAnimazione), newLeft, new Duration(TimeSpan.FromSeconds(1)));
+                DoubleAnimation animTop = new DoubleAnimation(Canvas.GetTop(imgAnimazione), newTop, new Duration(TimeSpan.FromSeconds(1)));
+
+                //Set an easing function so the button will quickly move away, then slow down
+                //as it reaches its destination.
+                animLeft.EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut };
+                animTop.EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseOut };
+
+                //Start the animation.
+                imgAnimazione.BeginAnimation(Canvas.LeftProperty, animLeft, HandoffBehavior.SnapshotAndReplace);
+                imgAnimazione.BeginAnimation(Canvas.TopProperty, animTop, HandoffBehavior.SnapshotAndReplace);
             }
         }
     }

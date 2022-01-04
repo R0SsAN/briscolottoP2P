@@ -144,7 +144,7 @@ namespace briscolottoP2P
             interfaccia.scelta = -1;
             if (getNCarteMano() == 0)
             {
-               // TODO: concludiPartita();
+                concludiPartita();
                 return;
             }
             //faccio scegliere la carta all'utente
@@ -209,7 +209,7 @@ namespace briscolottoP2P
             interfaccia.scelta = -1;
             if (getNCarteMano() == 0)
             {
-                // TODO: concludiPartita();
+               concludiPartita();
                 return;
             }
             //ricevo la carta giocata dal primo giocatore
@@ -359,5 +359,13 @@ namespace briscolottoP2P
                 carteMano[pos] = carta;
             }
         }
+        public void concludiPartita()
+        {
+
+            calcoloPunti();
+            ricezione.chiudiConnessione();
+
+        }
     }
+
 }
