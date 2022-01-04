@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace briscolottoP2P
@@ -72,6 +73,9 @@ namespace briscolottoP2P
             ricezione.waitConfermaMazzo();
             //dopo aver ricevuto la conferma di ricezione del mazzo l'altro giocatore inizia la giocata
 
+            //pescaggio iniziale delle 3 carte
+            pescaggioIniziale(true);
+            giocataSecondo();
         }
         public void avvioPartitaGiocatore()
         {
@@ -82,13 +86,196 @@ namespace briscolottoP2P
             //dopo averlo ricevuto invio conferma al mazziere
             invio.invioGenerico(ipDestinatario, "m;y;");
             //inizio giocata
+
+            //pescaggio iniziale delle 3 carte
+            pescaggioIniziale(false);
+            giocataPrimo();
+        }
+        public void pescaggioIniziale(bool type)
+        {
+            interfaccia.aggiornaCarte();
+            //type identifica se sono il mazziere o l'altro giocatore
+            //  type == true   se sono il mazziere sono il primo a prendere la carta
+            //  type == false  se sono l'altro giocatore devo aspettare che il mazziere prenda per primo la carta
+            if (type)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    pescaCarta(-1);
+                    ricezione.waitPresaCarta();
+                }
+            }
+            else
+            {
+                ricezione.waitPresaCarta();
+                for (int i = 0; i < 2; i++)
+                {
+                    pescaCarta(-1);
+                    ricezione.waitPresaCarta();
+                }
+                pescaCarta(-1);
+            }
+        }
+        public void pescaCarta(int pos)
+        {
+            //pesco una carta e aggiorno anche l'altro giocatore
+            if (getNCarteMano() < 3 && mazzo.sincronizzato.Count > 0)
+            {
+                Carta temp = mazzo.sincronizzato[0];
+                mazzo.sincronizzato.RemoveAt(0);
+                if (pos == -1)
+                {
+                    inserisciCartaManoInPos(temp, -1);
+                }
+                else
+                {
+                    inserisciCartaManoInPos(temp, pos);
+                }
+                invio.invioGenerico(ipDestinatario, "p;");
+            }
+            else
+            {
+                invio.invioGenerico(ipDestinatario, "p;");
+            }
+        }
+        public void giocataPrimo()
+        {
+            interfaccia.aggiornaCarte();
+            interfaccia.scelta = -1;
+            if (getNCarteMano() == 0)
+            {
+               // TODO: concludiPartita();
+                return;
+            }
+            //faccio scegliere la carta all'utente
+            interfaccia.puoiPrendere = true;
+            interfaccia.visualizzaTurno(true);
+            while (interfaccia.scelta == -1) ;
+            interfaccia.puoiPrendere = false;
+            Thread.Sleep(650);
+            interfaccia.visualizzaTurno(false);
+            Carta temp = carteMano[interfaccia.scelta];
+            //rimuovo carta scelta dal vettore di carte mie
+            carteMano[interfaccia.scelta] = null;
+            //la carico nel tavolo
+            carteTavolo.Add(temp);
+            //la invio all'altro giocatore in modo da sincronizzarsi
+            invio.inviaCartaGiocata(temp);
+            interfaccia.aggiornaCarte();
+
+            //ora aspetto che l'altro giocatore mi mandi la sua carta giocata
+            //ricevo la carta giocata dal secondo giocatore
+            Carta giocata = ricezione.waitCartaGiocata();
+            giocata = mazzo.completaCarta(giocata);
+            //aggiungo anche io la carta del destinatario nel tavolo in modo da averlo sincronizzato
+            carteTavolo.Add(giocata);
+
+            //ora aspetto dal secondo giocatore l'esito della mano
+            bool esito = ricezione.waitEsitoGiocata();
+            //se ho perso la mano
+            if (!esito)
+            {
+                //rimuovo le carte dal tavolo (che ha vinto l'altro giocatore)
+                carteTavolo.Clear();
+
+                //ora aspetto che l'altro giocatore peschi la carta per la prossima mano
+                ricezione.waitPresaCarta();
+                //ora pesco anche io la carta
+                pescaCarta(interfaccia.scelta);
+                //ora visto che ho perso la mano inizio come secondo giocatore
+                giocataSecondo();
+            }
+            //se invece ho vinto la mano
+            else if (esito)
+            {
+                //inserisco le carte del tavolo nelle mie carte vinte
+                carteVinte.Add(carteTavolo[0]);
+                carteVinte.Add(carteTavolo[1]);
+                //svuoto il tavolo
+                carteTavolo.Clear();
+
+                //ora pesco la carta per la prossima mano
+                pescaCarta(interfaccia.scelta);
+                //ora aspetto che l'altro giocatore peschi anche lui la carta
+                ricezione.waitPresaCarta();
+                //ora visto che ho vinto ricomincio la prossima mano come primo giocatore
+                giocataPrimo();
+            }
+
+        }
+        public void giocataSecondo()
+        {
+            interfaccia.aggiornaCarte();
+            interfaccia.scelta = -1;
+            if (getNCarteMano() == 0)
+            {
+                // TODO: concludiPartita();
+                return;
+            }
+            //ricevo la carta giocata dal primo giocatore
+            Carta giocata = ricezione.waitCartaGiocata();
+            giocata = mazzo.completaCarta(giocata);
+            //aggiungo anche io la carta del destinatario nel tavolo in modo da averlo sincronizzato
+            carteTavolo.Add(giocata);
+            interfaccia.aggiornaCarte();
+            //faccio scegliere la carta all'utente
+            interfaccia.puoiPrendere = true;
+            interfaccia.visualizzaTurno(true);
+            while (interfaccia.scelta == -1) ;
+            interfaccia.puoiPrendere = false;
+            Thread.Sleep(650);
+            interfaccia.visualizzaTurno(false);
+            Carta temp = carteMano[interfaccia.scelta];
+            //rimuovo carta scelta dal vettore di carte mie
+            carteMano[interfaccia.scelta] = null;
+            //la carico nel tavolo
+            carteTavolo.Add(temp);
+            //la invio all'altro giocatore in modo da sincronizzarsi
+            invio.inviaCartaGiocata(temp);
+            interfaccia.aggiornaCarte();
+
+            //ora devo vedere chi ha vinto o perso la giocata
+            string esito = calcoloVincitaPerdita();
+
+            //se ho vinto
+            if (esito == "l;")
+            {
+                //inserisco le carte del tavolo nelle mie carte vinte
+                carteVinte.Add(carteTavolo[0]);
+                carteVinte.Add(carteTavolo[1]);
+                //svuoto il tavolo
+                carteTavolo.Clear();
+                //ora comunico all'altro giocatore che ha perso
+                invio.invioGenerico(ipDestinatario, esito);
+
+                //ora pesco la carta per la prossima mano
+                pescaCarta(interfaccia.scelta);
+                //ora aspetto che l'altro giocatore peschi anche lui la carta
+                ricezione.waitPresaCarta();
+                //ora visto che ho vinto ricomincio la prossima mano come primo giocatore
+                giocataPrimo();
+            }
+            //se invece ho perso
+            else if (esito == "w;")
+            {
+                //svuoto il tavolo
+                carteTavolo.Clear();
+                //ora comunico all'altro giocatore che ha vinto
+                invio.invioGenerico(ipDestinatario, esito);
+                //ora aspetto che l'altro giocatore peschi la carta
+                ricezione.waitPresaCarta();
+                //ora pesco io la carta
+                pescaCarta(interfaccia.scelta);
+                //dopo aver pescato le carte inizio la prossima mano come secondo giocatore
+                giocataSecondo();
+            }
         }
 
         public void inviaMazzo()
         {
             mazzo = new Mazzo();
             mazzo.randomizzaMazzo();
-            invio.inviaMazzo(mazzo.mazzo);
+            invio.inviaMazzo(mazzo.sincronizzato);
         }
 
         public string calcoloVincitaPerdita()

@@ -25,10 +25,10 @@ namespace briscolottoP2P
                 _instance = new GestioneRicezione();
             return _instance;
         }
-        private GestioneRicezione()
+        public GestioneRicezione()
         {
             invio = GestioneInvio.getInstance();
-            server = new UdpClient(12345);
+            server = new UdpClient(12346);
             endpoint = new IPEndPoint(IPAddress.Any, 0);
         }
         public void caricaGestione()
@@ -208,6 +208,10 @@ namespace briscolottoP2P
                 return true;
             //se ha perso ritorno false
             return false;
+        }
+        public void chiudiConnessione()
+        {
+            server.Close();
         }
     }
 }
