@@ -126,17 +126,23 @@ namespace briscolottoP2P
                 if (pos == -1)
                 {
                     inserisciCartaManoInPos(temp, -1);
+                    interfaccia.animazionePesca(getNCarteMano() - 1);
                 }
                 else
                 {
                     inserisciCartaManoInPos(temp, pos);
+                    interfaccia.animazionePesca(pos);
                 }
+                //avvio animazione carta
+                Thread.Sleep(650);
+                interfaccia.terminaAnimazione();
                 invio.invioGenerico(ipDestinatario, "p;");
             }
             else
             {
                 invio.invioGenerico(ipDestinatario, "p;");
             }
+
         }
         public void giocataPrimo()
         {
@@ -152,7 +158,9 @@ namespace briscolottoP2P
             interfaccia.visualizzaTurno(true);
             while (interfaccia.scelta == -1) ;
             interfaccia.puoiPrendere = false;
+            interfaccia.animazioneButta(carteMano[interfaccia.scelta].img);
             Thread.Sleep(650);
+            interfaccia.terminaAnimazione();
             interfaccia.visualizzaTurno(false);
             Carta temp = carteMano[interfaccia.scelta];
             //rimuovo carta scelta dal vettore di carte mie
@@ -209,7 +217,7 @@ namespace briscolottoP2P
             interfaccia.scelta = -1;
             if (getNCarteMano() == 0)
             {
-               concludiPartita();
+                concludiPartita();
                 return;
             }
             //ricevo la carta giocata dal primo giocatore
@@ -223,7 +231,9 @@ namespace briscolottoP2P
             interfaccia.visualizzaTurno(true);
             while (interfaccia.scelta == -1) ;
             interfaccia.puoiPrendere = false;
+            interfaccia.animazioneButta(carteMano[interfaccia.scelta].img);
             Thread.Sleep(650);
+            interfaccia.terminaAnimazione();
             interfaccia.visualizzaTurno(false);
             Carta temp = carteMano[interfaccia.scelta];
             //rimuovo carta scelta dal vettore di carte mie

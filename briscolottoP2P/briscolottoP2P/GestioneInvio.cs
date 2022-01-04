@@ -24,7 +24,7 @@ namespace briscolottoP2P
         private GestioneInvio()
         {
             client = new UdpClient();
-            portaInvio = 12346;
+            portaInvio = 12345;
         }
         public void caricaGestione()
         {

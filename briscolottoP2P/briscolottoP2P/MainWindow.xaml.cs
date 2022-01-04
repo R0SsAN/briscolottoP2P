@@ -352,5 +352,22 @@ namespace briscolottoP2P
                 imgAnimazione.BeginAnimation(Canvas.TopProperty, animTop, HandoffBehavior.SnapshotAndReplace);
             }
         }
+        public void terminaAnimazione()
+        {
+            //questo metodo permette di terminare l'animazione in modo da poter poi modificare e spostare l'oggetto precedentemente animato
+            if (!CheckAccess())
+                Dispatcher.Invoke(() => { terminaAnimazione(); });
+            else
+            {
+                aggiornaCarte();
+                imgAnimazione.Visibility = Visibility.Hidden;
+                imgAnimazione.BeginAnimation(Canvas.LeftProperty, null);
+                imgAnimazione.BeginAnimation(Canvas.TopProperty, null);
+                imgAnimazione.Source = new BitmapImage(new Uri("https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/back.gif"));
+                Canvas.SetLeft(imgAnimazione, 39);
+                Canvas.SetTop(imgAnimazione, 240);
+            }
+
+        }
     }
 }

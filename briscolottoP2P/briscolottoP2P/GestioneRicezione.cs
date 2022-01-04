@@ -45,6 +45,8 @@ namespace briscolottoP2P
         {
             while (true)
             {
+                if (server == null)
+                    break;
                 byte[] ricezione = server.Receive(ref endpoint);
                 string[] split = Encoding.ASCII.GetString(ricezione).Split(';');
                 char scelta = split[0].ElementAt(0);
@@ -212,6 +214,7 @@ namespace briscolottoP2P
         public void chiudiConnessione()
         {
             server.Close();
+            server = null;
         }
     }
 }
