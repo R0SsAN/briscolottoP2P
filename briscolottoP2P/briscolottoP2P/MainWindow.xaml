@@ -37,7 +37,7 @@
         <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="640" VerticalAlignment="Top" Width="1088">
             <Canvas Height="100" Canvas.Left="244" Canvas.Top="544" Width="100"/>
             <Image x:Name="imgAnimazione" Source="back.gif" Stretch="Fill" RenderTransformOrigin="0.548,0.493" Height="156" Canvas.Left="39" Canvas.Top="240" Width="98.8" Visibility="Hidden"/>
-            <Image Height="122" Canvas.Left="328" Canvas.Top="5" Width="441"/>
+            <Image Height="122" Canvas.Left="328" Canvas.Top="5" Width="441" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/risultato/logo.png"/>
             <Label x:Name="nick" Content="Nickname:" Canvas.Left="244" Canvas.Top="195" RenderTransformOrigin="0.289,-0.5" Height="40" Width="146" FontSize="25"/>
             <Label x:Name="ip" Content="IP Avversario" Canvas.Left="661" Canvas.Top="195" RenderTransformOrigin="0.289,-0.5" Height="40" Width="162" FontSize="25"/>
         </Canvas>

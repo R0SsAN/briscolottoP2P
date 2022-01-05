@@ -94,6 +94,27 @@ namespace briscolottoP2P
                 ip.Visibility = Visibility.Hidden;
             }
         }
+        public void invisibileTutto()
+        {
+            if (!CheckAccess())
+                Dispatcher.Invoke(() => { invisibileTutto(); });
+            else
+            {
+                mia1.Visibility = Visibility.Hidden;
+                mia2.Visibility = Visibility.Hidden;
+                mia3.Visibility = Visibility.Hidden;
+                tavolo1.Visibility = Visibility.Hidden;
+                tavolo2.Visibility = Visibility.Hidden;
+                mazzo.Visibility = Visibility.Hidden;
+                briscola.Visibility = Visibility.Hidden;
+                lName.Visibility = Visibility.Hidden;
+                lAvv.Visibility = Visibility.Hidden;
+                btnName.Visibility = Visibility.Hidden;
+                btnRischiesta.Visibility = Visibility.Hidden;
+                nick.Visibility = Visibility.Hidden;
+                ip.Visibility = Visibility.Hidden;
+            }
+        }
 
         private void btnName_Click(object sender, RoutedEventArgs e)
         {
@@ -152,19 +173,20 @@ namespace briscolottoP2P
             {
                 if (a == 1)
                 {
-                    imgRisultato.Source = new BitmapImage(new Uri(""));
+                    imgRisultato.Source = new BitmapImage(new Uri("https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/risultato/youwin.png"));
                     imgRisultato.Visibility = Visibility.Visible;
                 }
                 else if (a == 0)
                 {
-                    imgRisultato.Source = new BitmapImage(new Uri(""));
+                    imgRisultato.Source = new BitmapImage(new Uri("https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/risultato/youdraw.png"));
                     imgRisultato.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    imgRisultato.Source = new BitmapImage(new Uri(""));
+                    imgRisultato.Source = new BitmapImage(new Uri("https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/risultato/youlose.png"));
                     imgRisultato.Visibility = Visibility.Visible;
                 }
+                bNuova.Visibility = Visibility.Visible;
             }
         }
 
@@ -189,7 +211,7 @@ namespace briscolottoP2P
                 Dispatcher.Invoke(() => { aggiornaCarte(); });
             else
             {
-                Thread.Sleep(250);
+                Thread.Sleep(300);
                 try
                 {
                     mia1.Visibility = Visibility.Visible;
@@ -270,6 +292,10 @@ namespace briscolottoP2P
             ricezione.startaThread();
             //resetto anche la gestione partita
             gestione.statoConnessione = 0;
+            gestione.carteTavolo = new List<Carta>();
+            gestione.carteVinte = new List<Carta>();
+            gestione.carteMano = new Carta[3];
+            Invisibile();
             bNuova.Visibility = Visibility.Hidden;
         }
         public void animazionePesca(int n)

@@ -336,15 +336,18 @@ namespace briscolottoP2P
             }
             if (temp > 60)
             {
-                //viusalliza in label hai vinto
+                interfaccia.invisibileTutto();
+                interfaccia.visualizzaRisultato(1);
             }
             else if (temp < 60)
             {
-                //viusalliza in label hai perso 
+                interfaccia.invisibileTutto();
+                interfaccia.visualizzaRisultato(-1);
             }
             else
             {
-                //viusalliza in label hai pareggio
+                interfaccia.invisibileTutto();
+                interfaccia.visualizzaRisultato(0);
             }
         }
         public int getNCarteMano()
