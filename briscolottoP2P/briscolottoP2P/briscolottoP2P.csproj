@@ -102,5 +102,8 @@
   <ItemGroup>
     <Resource Include="back.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LegalCraftyFinch-small.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

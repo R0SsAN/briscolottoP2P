@@ -291,11 +291,12 @@ namespace briscolottoP2P
             ricezione = new GestioneRicezione();
             ricezione.startaThread();
             //resetto anche la gestione partita
-            gestione.statoConnessione = 0;
             gestione.carteTavolo = new List<Carta>();
             gestione.carteVinte = new List<Carta>();
             gestione.carteMano = new Carta[3];
             Invisibile();
+            imgRisultato.Visibility = Visibility.Hidden;
+            annullaRichiesta();
             bNuova.Visibility = Visibility.Hidden;
         }
         public void animazionePesca(int n)

@@ -314,7 +314,7 @@ namespace briscolottoP2P
                     invio = "l;";
             }
             //in questo caso tutti e due i giocatori hanno buttato una carta seme non briscola, vince quello con il valore più alto
-            else if (carteTavolo[1].seme == carteTavolo[1].seme && briscola.seme != carteTavolo[0].seme)
+            else if (carteTavolo[0].seme == carteTavolo[1].seme && briscola.seme != carteTavolo[0].seme)
             {
                 if (carteTavolo[0].valore > carteTavolo[1].valore)
                     invio = "w;";
@@ -322,7 +322,7 @@ namespace briscolottoP2P
                     invio = "l;";
             }
             //in questo caso le due carte sono di semi diversi, vince il primo giocatore
-            else if (carteTavolo[1].seme != carteTavolo[1].seme && briscola.seme != carteTavolo[0].seme)
+            else if (carteTavolo[0].seme != carteTavolo[1].seme)
                 invio = "w;";
 
             return invio;
