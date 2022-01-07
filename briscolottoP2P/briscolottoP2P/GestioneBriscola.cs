@@ -183,6 +183,7 @@ namespace briscolottoP2P
             //se ho perso la mano
             if (!esito)
             {
+                mostraEsito(false);
                 //rimuovo le carte dal tavolo (che ha vinto l'altro giocatore)
                 carteTavolo.Clear();
 
@@ -196,6 +197,7 @@ namespace briscolottoP2P
             //se invece ho vinto la mano
             else if (esito)
             {
+                mostraEsito(true);
                 //inserisco le carte del tavolo nelle mie carte vinte
                 carteVinte.Add(carteTavolo[0]);
                 carteVinte.Add(carteTavolo[1]);
@@ -250,6 +252,7 @@ namespace briscolottoP2P
             //se ho vinto
             if (esito == "l;")
             {
+                mostraEsito(true);
                 //inserisco le carte del tavolo nelle mie carte vinte
                 carteVinte.Add(carteTavolo[0]);
                 carteVinte.Add(carteTavolo[1]);
@@ -268,6 +271,7 @@ namespace briscolottoP2P
             //se invece ho perso
             else if (esito == "w;")
             {
+                mostraEsito(false);
                 //svuoto il tavolo
                 carteTavolo.Clear();
                 //ora comunico all'altro giocatore che ha vinto
@@ -378,6 +382,21 @@ namespace briscolottoP2P
             calcoloPunti();
             ricezione.chiudiConnessione();
 
+        }
+        public void mostraEsito(bool check)
+        {
+            //se ho vinto  check=true
+            //se ho perso  check=false
+            Thread t = new Thread(new ThreadStart(() =>
+            {
+                if (check)
+                    interfaccia.mostraEsito(1);
+                else
+                    interfaccia.mostraEsito(0);
+                Thread.Sleep(2000);
+                    interfaccia.mostraEsito(-1);
+            }));
+            t.Start();
         }
     }
 

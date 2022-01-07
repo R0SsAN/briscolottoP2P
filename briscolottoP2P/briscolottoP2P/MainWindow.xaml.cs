@@ -396,5 +396,27 @@ namespace briscolottoP2P
             }
 
         }
+        public void mostraEsito(int check)
+        {
+            if (!CheckAccess())
+                Dispatcher.Invoke(() => { mostraEsito(check); });
+            else
+            {
+                if(check==1)
+                {
+                    lEsito.Foreground = Brushes.Orange;
+                    lEsito.Content = "Hai vinto la mano!";
+                    lEsito.Visibility = Visibility.Visible;
+                }
+                else if(check==0)
+                {
+                    lEsito.Foreground = Brushes.Red;
+                    lEsito.Content = "Hai perso la mano!";
+                    lEsito.Visibility = Visibility.Visible;
+                }
+                else
+                    lEsito.Visibility = Visibility.Hidden;
+            }
+        }
     }
 }
