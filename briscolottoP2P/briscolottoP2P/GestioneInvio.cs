@@ -68,14 +68,14 @@ namespace briscolottoP2P
             string invio = "m;";
             for (int i = 0; i < mazzo.Count; i++)
             {
-                invio += mazzo[i].valore + "," + mazzo[i].seme + ";";
+                invio += mazzo[i].numero + "," + mazzo[i].seme + ";";
             }
             byte[] buffer = Encoding.ASCII.GetBytes(invio);
             client.Send(buffer, buffer.Length, gestioneBriscola.ipDestinatario, portaInvio);
         }
         public void inviaCartaGiocata(Carta carta)
         {
-            string invio = "b;" + carta.valore + ";" + carta.seme + ";";
+            string invio = "b;" + carta.numero + ";" + carta.seme + ";";
             byte[] buffer = Encoding.ASCII.GetBytes(invio);
             client.Send(buffer, buffer.Length, gestioneBriscola.ipDestinatario, portaInvio);
         }
