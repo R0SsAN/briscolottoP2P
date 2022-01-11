@@ -177,7 +177,7 @@ namespace briscolottoP2P
             giocata = mazzo.completaCarta(giocata);
             //aggiungo anche io la carta del destinatario nel tavolo in modo da averlo sincronizzato
             carteTavolo.Add(giocata);
-
+            interfaccia.aggiornaCarte();
             //ora aspetto dal secondo giocatore l'esito della mano
             bool esito = ricezione.waitEsitoGiocata();
             //se ho perso la mano
@@ -245,7 +245,7 @@ namespace briscolottoP2P
             //la invio all'altro giocatore in modo da sincronizzarsi
             invio.inviaCartaGiocata(temp);
             interfaccia.aggiornaCarte();
-
+            interfaccia.aggiornaCarte();
             //ora devo vedere chi ha vinto o perso la giocata
             string esito = calcoloVincitaPerdita();
 

@@ -190,7 +190,8 @@ namespace briscolottoP2P
                     invio.invioGenerico(endpoint.Address.ToString(), "n;");
             }
             while (split[0] != "b;" && gestioneBriscola.ipDestinatario != endpoint.Address.ToString());
-            temp = new Carta(split[2], 0, 0, "", Convert.ToInt32(split[1]));
+            string[] split2 = split[1].Split(',');
+            temp = new Carta(split2[1], 0, 0, "", Convert.ToInt32(split2[0]));
             return temp;
         }
         public bool waitEsitoGiocata()

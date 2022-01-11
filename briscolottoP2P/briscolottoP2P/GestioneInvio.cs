@@ -75,7 +75,7 @@ namespace briscolottoP2P
         }
         public void inviaCartaGiocata(Carta carta)
         {
-            string invio = "b;" + carta.numero + ";" + carta.seme + ";";
+            string invio = "b;" + carta.numero + "," + carta.seme + ";";
             byte[] buffer = Encoding.ASCII.GetBytes(invio);
             client.Send(buffer, buffer.Length, gestioneBriscola.ipDestinatario, portaInvio);
         }
