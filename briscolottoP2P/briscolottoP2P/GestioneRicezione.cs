@@ -28,7 +28,7 @@ namespace briscolottoP2P
         public GestioneRicezione()
         {
             invio = GestioneInvio.getInstance();
-            server = new UdpClient(12346);
+            server = new UdpClient(12345);
             endpoint = new IPEndPoint(IPAddress.Any, 0);
         }
         public void caricaGestione()
