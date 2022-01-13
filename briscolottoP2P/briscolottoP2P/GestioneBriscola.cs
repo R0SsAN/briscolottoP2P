@@ -134,7 +134,7 @@ namespace briscolottoP2P
                     interfaccia.animazionePesca(pos);
                 }
                 //avvio animazione carta
-                Thread.Sleep(650);
+                Thread.Sleep(670);
                 interfaccia.terminaAnimazione();
                 invio.invioGenerico(ipDestinatario, "p;");
             }
@@ -159,7 +159,7 @@ namespace briscolottoP2P
             while (interfaccia.scelta == -1) ;
             interfaccia.puoiPrendere = false;
             interfaccia.animazioneButta(carteMano[interfaccia.scelta].img);
-            Thread.Sleep(650);
+            Thread.Sleep(670);
             interfaccia.terminaAnimazione();
             interfaccia.visualizzaTurno(false);
             Carta temp = carteMano[interfaccia.scelta];
@@ -234,7 +234,7 @@ namespace briscolottoP2P
             while (interfaccia.scelta == -1) ;
             interfaccia.puoiPrendere = false;
             interfaccia.animazioneButta(carteMano[interfaccia.scelta].img);
-            Thread.Sleep(650);
+            Thread.Sleep(670);
             interfaccia.terminaAnimazione();
             interfaccia.visualizzaTurno(false);
             Carta temp = carteMano[interfaccia.scelta];
@@ -318,8 +318,9 @@ namespace briscolottoP2P
                     invio = "l;";
             }
             //in questo caso tutti e due i giocatori hanno buttato una carta seme non briscola, vince quello con il valore più alto
-            else if (carteTavolo[0].seme == carteTavolo[1].seme && briscola.seme != carteTavolo[0].seme)
+            else if (briscola.seme != carteTavolo[1].seme && carteTavolo[1].seme == carteTavolo[0].seme)
             {
+
                 if (carteTavolo[0].valore > carteTavolo[1].valore)
                     invio = "w;";
                 else if (carteTavolo[0].valore < carteTavolo[1].valore)
@@ -394,7 +395,7 @@ namespace briscolottoP2P
                 else
                     interfaccia.mostraEsito(0);
                 Thread.Sleep(2000);
-                    interfaccia.mostraEsito(-1);
+                interfaccia.mostraEsito(-1);
             }));
             t.Start();
         }

@@ -78,6 +78,7 @@ namespace briscolottoP2P
                 Dispatcher.Invoke(() => { visibile(); });
             else
             {
+                ridimensiona(true);
                 mia1.Visibility = Visibility.Visible;
                 mia2.Visibility = Visibility.Visible;
                 mia3.Visibility = Visibility.Visible;
@@ -211,7 +212,7 @@ namespace briscolottoP2P
                 Dispatcher.Invoke(() => { aggiornaCarte(); });
             else
             {
-                Thread.Sleep(300);
+                Thread.Sleep(20);
                 try
                 {
                     mia1.Visibility = Visibility.Visible;
@@ -221,6 +222,7 @@ namespace briscolottoP2P
                 {
                     mia1.Visibility = Visibility.Hidden;
                 }
+                Thread.Sleep(20);
                 try
                 {
                     mia2.Visibility = Visibility.Visible;
@@ -230,6 +232,7 @@ namespace briscolottoP2P
                 {
                     mia2.Visibility = Visibility.Hidden;
                 }
+                Thread.Sleep(20);
                 try
                 {
                     mia3.Visibility = Visibility.Visible;
@@ -239,6 +242,7 @@ namespace briscolottoP2P
                 {
                     mia3.Visibility = Visibility.Hidden;
                 }
+                Thread.Sleep(20);
                 try
                 {
                     tavolo1.Visibility = Visibility.Visible;
@@ -248,6 +252,7 @@ namespace briscolottoP2P
                 {
                     tavolo1.Visibility = Visibility.Hidden;
                 }
+                Thread.Sleep(20);
                 try
                 {
                     tavolo2.Visibility = Visibility.Visible;
@@ -257,6 +262,7 @@ namespace briscolottoP2P
                 {
                     tavolo2.Visibility = Visibility.Hidden;
                 }
+                Thread.Sleep(20);
                 try
                 {
                     briscola.Visibility = Visibility.Visible;
@@ -266,6 +272,7 @@ namespace briscolottoP2P
                 {
                     briscola.Visibility = Visibility.Hidden;
                 }
+                Thread.Sleep(20);
                 if (gestione.mazzo.sincronizzato.Count < 1)
                 {
                     mazzo.Visibility = Visibility.Hidden;
@@ -287,6 +294,7 @@ namespace briscolottoP2P
         private void bNuova_Click(object sender, RoutedEventArgs e)
         {
             Invisibile();
+            ridimensiona(false);
             //resetto la ricezione in modo da creare un nuovo thread per la nuova partita
             ricezione = new GestioneRicezione();
             ricezione.startaThread();
@@ -402,13 +410,13 @@ namespace briscolottoP2P
                 Dispatcher.Invoke(() => { mostraEsito(check); });
             else
             {
-                if(check==1)
+                if (check == 1)
                 {
                     lEsito.Foreground = Brushes.Orange;
                     lEsito.Content = "Hai vinto la mano!";
                     lEsito.Visibility = Visibility.Visible;
                 }
-                else if(check==0)
+                else if (check == 0)
                 {
                     lEsito.Foreground = Brushes.Red;
                     lEsito.Content = "Hai perso la mano!";
@@ -416,6 +424,26 @@ namespace briscolottoP2P
                 }
                 else
                     lEsito.Visibility = Visibility.Hidden;
+            }
+        }
+        public void ridimensiona(bool check)
+        {
+            if (!CheckAccess())
+                Dispatcher.Invoke(() => { ridimensiona(check); });
+            else
+            {
+                if (check)
+                {
+                    window.Width = 1096.977f;
+                    window.Height = 664.971f;
+                    Canvas.SetLeft(logo, 328);
+                }
+                else
+                {
+                    window.Width = 692.977f;
+                    window.Height = 492.954f;
+                    Canvas.SetLeft(logo, 123);
+                }
             }
         }
     }

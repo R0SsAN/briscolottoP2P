@@ -1,11 +1,69 @@
-﻿<Window x:Class="briscolottoP2P.MainWindow"
+﻿<Window x:Name="window" x:Class="briscolottoP2P.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:briscolottoP2P"
         mc:Ignorable="d"
-        Title="MainWindow" Height="664.971" Width="1096.977" ResizeMode="NoResize">
+        Title="MainWindow" Height="492.954" Width="692.977" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <Style x:Key="rounded" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="15" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid x:Name="background" Margin="0,0,2,-5" OpacityMask="#FF046412" Background="#FF7BE87B">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -27,19 +85,19 @@
         <Image x:Name="mia3" HorizontalAlignment="Left" Height="155" Margin="799,447,0,0" VerticalAlignment="Top" Width="99" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/10b.gif" MouseDown="mia3_MouseDown" Visibility="Hidden"/>
         <Image x:Name="mia2" HorizontalAlignment="Left" Height="155" Margin="619,447,0,0" VerticalAlignment="Top" Width="99" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/bastoni/10b.gif" MouseDown="mia2_MouseDown" Visibility="Hidden"/>
         <Image x:Name="mazzo" Margin="39,240,951,244" Source="back.gif" Stretch="Fill" RenderTransformOrigin="0.548,0.493"/>
-        <TextBox x:Name="lName" HorizontalAlignment="Left" Height="47" Margin="200,240,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" FontSize="20"/>
-        <TextBox x:Name="lAvv" HorizontalAlignment="Left" Height="45" Margin="634,240,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" FontSize="20"/>
-        <Button x:Name="btnName" Content="Conferma nickname" HorizontalAlignment="Left" Margin="200,314,0,0" VerticalAlignment="Top" Width="221" Height="47" FontSize="20" Click="btnName_Click"/>
-        <Button x:Name="btnRischiesta" Content="Invia richiesta" HorizontalAlignment="Left" Margin="634,314,0,0" VerticalAlignment="Top" Width="220" Height="47" FontSize="20" Click="btnRischiesta_Click"/>
+        <TextBox x:Name="lName" HorizontalAlignment="Left" Height="47" Margin="81,240,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" FontSize="20"/>
+        <TextBox x:Name="lAvv" HorizontalAlignment="Left" Height="45" Margin="386,240,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" FontSize="20"/>
+        <Button x:Name="btnName" Content="Conferma nickname" HorizontalAlignment="Left" Margin="81,314,0,0" VerticalAlignment="Top" Width="221" Height="47" FontSize="20" Click="btnName_Click" FontFamily="Bauhaus 93" />
+        <Button x:Name="btnRischiesta" Content="Invia richiesta" HorizontalAlignment="Left" Margin="386,314,0,0" VerticalAlignment="Top" Width="220" Height="47" FontSize="20" Click="btnRischiesta_Click" FontFamily="Bauhaus 93"/>
         <Image x:Name="imgRisultato" HorizontalAlignment="Left" Height="324" Margin="200,165,0,0" VerticalAlignment="Top" Width="698" Visibility="Hidden"/>
         <Label x:Name="lTurno" Content="E' il tuo turno" HorizontalAlignment="Left" Margin="861,91,0,0" VerticalAlignment="Top" FontSize="25" Foreground="#FFE00303" FontWeight="Bold" Visibility="Hidden"/>
         <Button x:Name="bNuova" Content="Nuova partita" HorizontalAlignment="Left" Margin="302,514,0,0" VerticalAlignment="Top" Width="478" Height="58" FontSize="30" Click="bNuova_Click" Visibility="Hidden"/>
         <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="640" VerticalAlignment="Top" Width="1088">
             <Canvas Height="100" Canvas.Left="244" Canvas.Top="544" Width="100"/>
             <Image x:Name="imgAnimazione" Source="back.gif" Stretch="Fill" RenderTransformOrigin="0.548,0.493" Height="156" Canvas.Left="39" Canvas.Top="240" Width="98.8" Visibility="Hidden"/>
-            <Image Height="122" Canvas.Left="328" Canvas.Top="5" Width="441" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/risultato/logo.png"/>
-            <Label x:Name="nick" Content="Nickname:" Canvas.Left="244" Canvas.Top="195" RenderTransformOrigin="0.289,-0.5" Height="40" Width="146" FontSize="25"/>
-            <Label x:Name="ip" Content="IP Avversario" Canvas.Left="661" Canvas.Top="195" RenderTransformOrigin="0.289,-0.5" Height="40" Width="162" FontSize="25"/>
+            <Image x:Name="logo" Height="122" Canvas.Left="123" Width="441" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/risultato/logo.png" Canvas.Top="5"/>
+            <Label x:Name="nick" Content="Nickname:" Canvas.Left="125" Canvas.Top="195" RenderTransformOrigin="0.289,-0.5" Height="40" Width="146" FontSize="25" FontFamily="Bauhaus 93"/>
+            <Label x:Name="ip" Content="IP Avversario" Canvas.Left="413" Canvas.Top="195" RenderTransformOrigin="0.289,-0.5" Height="40" Width="162" FontSize="25" FontFamily="Bauhaus 93"/>
         </Canvas>
         <Label x:Name="lEsito" Content="Hai vinto la mano!" HorizontalAlignment="Left" Margin="70,89,0,0" VerticalAlignment="Top" Height="45" Width="224" FontSize="25" Foreground="#FFE00303" FontWeight="Bold" Visibility="Hidden"/>
     </Grid>
