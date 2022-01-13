@@ -189,6 +189,13 @@ namespace briscolottoP2P
                 //rimuovo le carte dal tavolo (che ha vinto l'altro giocatore)
                 carteTavolo.Clear();
 
+                //fix per far funzionare con altro gruppo
+                if (getNCarteMano() == 0 && mazzo.sincronizzato.Count==0)
+                {
+                    concludiPartita();
+                    return;
+                }
+
                 //ora aspetto che l'altro giocatore peschi la carta per la prossima mano
                 ricezione.waitPresaCarta();
                 //ora pesco anche io la carta
@@ -205,6 +212,13 @@ namespace briscolottoP2P
                 carteVinte.Add(carteTavolo[1]);
                 //svuoto il tavolo
                 carteTavolo.Clear();
+
+                //fix per far funzionare con altro gruppo
+                if (getNCarteMano() == 0)
+                {
+                    concludiPartita();
+                    return;
+                }
 
                 //ora pesco la carta per la prossima mano
                 pescaCarta(interfaccia.scelta);
@@ -226,7 +240,7 @@ namespace briscolottoP2P
             }
             //ricevo la carta giocata dal primo giocatore
             interfaccia.visualizzaTurno(2);
-            Carta giocata = ricezione.waitCartaGiocata(); 
+            Carta giocata = ricezione.waitCartaGiocata();
             interfaccia.visualizzaTurno(1);
             giocata = mazzo.completaCarta(giocata);
             //aggiungo anche io la carta del destinatario nel tavolo in modo da averlo sincronizzato
@@ -265,6 +279,13 @@ namespace briscolottoP2P
                 //ora comunico all'altro giocatore che ha perso
                 invio.invioGenerico(ipDestinatario, esito);
 
+                //fix per far funzionare con altro gruppo
+                if (getNCarteMano() == 0 && mazzo.sincronizzato.Count == 0)
+                {
+                    concludiPartita();
+                    return;
+                }
+
                 //ora pesco la carta per la prossima mano
                 pescaCarta(interfaccia.scelta);
                 //ora aspetto che l'altro giocatore peschi anche lui la carta
@@ -280,6 +301,14 @@ namespace briscolottoP2P
                 carteTavolo.Clear();
                 //ora comunico all'altro giocatore che ha vinto
                 invio.invioGenerico(ipDestinatario, esito);
+
+                //fix per far funzionare con altro gruppo
+                if (getNCarteMano() == 0 && mazzo.sincronizzato.Count == 0)
+                {
+                    concludiPartita();
+                    return;
+                }
+
                 //ora aspetto che l'altro giocatore peschi la carta
                 ricezione.waitPresaCarta();
                 //ora pesco io la carta
@@ -313,22 +342,20 @@ namespace briscolottoP2P
             //in questo caso il secondo giocatore ha buttato una carta di briscola mentre il primo no, vince il secondo
             else if (briscola.seme != carteTavolo[0].seme && briscola.seme == carteTavolo[1].seme)
                 invio = "l;";
-            //in questo caso tutti e due i giocatori hanno buttato una briscola, quindi vince quello con il valore più alto
-            else if (briscola.seme == carteTavolo[0].seme && briscola.seme == carteTavolo[1].seme)
+            //in questo caso tutti e due i giocatori hanno buttato una carta con seme uguale, vince quello con il valore più alto
+            else if (carteTavolo[1].seme == carteTavolo[0].seme)
             {
                 if (carteTavolo[0].valore > carteTavolo[1].valore)
                     invio = "w;";
                 else if (carteTavolo[0].valore < carteTavolo[1].valore)
                     invio = "l;";
-            }
-            //in questo caso tutti e due i giocatori hanno buttato una carta seme non briscola, vince quello con il valore più alto
-            else if (briscola.seme != carteTavolo[1].seme && carteTavolo[1].seme == carteTavolo[0].seme)
-            {
-
-                if (carteTavolo[0].valore > carteTavolo[1].valore)
-                    invio = "w;";
-                else if (carteTavolo[0].valore < carteTavolo[1].valore)
-                    invio = "l;";
+                else
+                {
+                    if (carteTavolo[0].numero > carteTavolo[1].numero)
+                        invio = "w;";
+                    else
+                        invio = "l;";
+                }
             }
             //in questo caso le due carte sono di semi diversi, vince il primo giocatore
             else if (carteTavolo[0].seme != carteTavolo[1].seme)
@@ -341,7 +368,7 @@ namespace briscolottoP2P
             int temp = 0;
             for (int i = 0; i < carteVinte.Count; i++)
             {
-                temp += carteVinte[i].punteggio;
+                temp += carteVinte[i].valore;
             }
             if (temp > 60)
             {

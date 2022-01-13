@@ -150,7 +150,7 @@ namespace briscolottoP2P
             for (int i = 1; i < split.Length - 1; i++)
             {
                 string[] temp = split[i].Split(',');
-                carte.Add(new Carta(temp[1], 0, 0, "",Convert.ToInt32(temp[0])));
+                carte.Add(new Carta(temp[1], 0, "", Convert.ToInt32(temp[0])));
             }
             return carte;
         }
@@ -191,7 +191,7 @@ namespace briscolottoP2P
             }
             while (split[0] != "b;" && gestioneBriscola.ipDestinatario != endpoint.Address.ToString());
             string[] split2 = split[1].Split(',');
-            temp = new Carta(split2[1], 0, 0, "", Convert.ToInt32(split2[0]));
+            temp = new Carta(split2[1], 0, "", Convert.ToInt32(split2[0]));
             return temp;
         }
         public bool waitEsitoGiocata()
