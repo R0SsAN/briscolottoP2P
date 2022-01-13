@@ -279,16 +279,24 @@ namespace briscolottoP2P
                 }
             }
         }
-        public void visualizzaTurno(bool check)
+        public void visualizzaTurno(int check)
         {
             if (!CheckAccess())
                 Dispatcher.Invoke(() => { visualizzaTurno(check); });
             else
             {
-                if (check)
+                if (check==0)
+                {
+                    lTurno.Content = "E' il tuo turno!";
                     lTurno.Visibility = Visibility.Visible;
-                else
+                }
+                else if(check==1)
                     lTurno.Visibility = Visibility.Hidden;
+                else if(check==2)
+                {
+                    lTurno.Content = "Attendi il tuo turno!";
+                    lTurno.Visibility = Visibility.Visible;
+                }
             }
         }
         private void bNuova_Click(object sender, RoutedEventArgs e)

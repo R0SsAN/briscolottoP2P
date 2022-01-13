@@ -87,11 +87,11 @@
         <Image x:Name="mazzo" Margin="39,240,951,244" Source="back.gif" Stretch="Fill" RenderTransformOrigin="0.548,0.493"/>
         <TextBox x:Name="lName" HorizontalAlignment="Left" Height="47" Margin="81,240,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" FontSize="20"/>
         <TextBox x:Name="lAvv" HorizontalAlignment="Left" Height="45" Margin="386,240,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" FontSize="20"/>
-        <Button x:Name="btnName" Content="Conferma nickname" HorizontalAlignment="Left" Margin="81,314,0,0" VerticalAlignment="Top" Width="221" Height="47" FontSize="20" Click="btnName_Click" FontFamily="Bauhaus 93" />
-        <Button x:Name="btnRischiesta" Content="Invia richiesta" HorizontalAlignment="Left" Margin="386,314,0,0" VerticalAlignment="Top" Width="220" Height="47" FontSize="20" Click="btnRischiesta_Click" FontFamily="Bauhaus 93"/>
+        <Button x:Name="btnName" Content="Conferma nickname" HorizontalAlignment="Left" Margin="81,314,0,0" VerticalAlignment="Top" Width="221" Height="47" FontSize="20" Click="btnName_Click" FontFamily="Bauhaus 93" Style="{DynamicResource rounded}" />
+        <Button x:Name="btnRischiesta" Content="Invia richiesta" HorizontalAlignment="Left" Margin="386,314,0,0" VerticalAlignment="Top" Width="220" Height="47" FontSize="20" Click="btnRischiesta_Click" FontFamily="Bauhaus 93" Style="{DynamicResource rounded}"/>
         <Image x:Name="imgRisultato" HorizontalAlignment="Left" Height="324" Margin="200,165,0,0" VerticalAlignment="Top" Width="698" Visibility="Hidden"/>
-        <Label x:Name="lTurno" Content="E' il tuo turno" HorizontalAlignment="Left" Margin="861,91,0,0" VerticalAlignment="Top" FontSize="25" Foreground="#FFE00303" FontWeight="Bold" Visibility="Hidden"/>
-        <Button x:Name="bNuova" Content="Nuova partita" HorizontalAlignment="Left" Margin="302,514,0,0" VerticalAlignment="Top" Width="478" Height="58" FontSize="30" Click="bNuova_Click" Visibility="Hidden"/>
+        <Label x:Name="lTurno" Content="E' il tuo turno" HorizontalAlignment="Left" Margin="820,91,0,0" VerticalAlignment="Top" FontSize="25" Foreground="#FFFFA243" FontWeight="Bold" Background="{x:Null}" Visibility="Hidden"/>
+        <Button x:Name="bNuova" Content="Nuova partita" HorizontalAlignment="Left" Margin="302,514,0,0" VerticalAlignment="Top" Width="478" Height="58" FontSize="30" Click="bNuova_Click" Style="{DynamicResource rounded}" Visibility="Hidden" FontFamily="Bauhaus 93"/>
         <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="640" VerticalAlignment="Top" Width="1088">
             <Canvas Height="100" Canvas.Left="244" Canvas.Top="544" Width="100"/>
             <Image x:Name="imgAnimazione" Source="back.gif" Stretch="Fill" RenderTransformOrigin="0.548,0.493" Height="156" Canvas.Left="39" Canvas.Top="240" Width="98.8" Visibility="Hidden"/>

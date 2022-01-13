@@ -155,13 +155,13 @@ namespace briscolottoP2P
             }
             //faccio scegliere la carta all'utente
             interfaccia.puoiPrendere = true;
-            interfaccia.visualizzaTurno(true);
+            interfaccia.visualizzaTurno(0);
             while (interfaccia.scelta == -1) ;
             interfaccia.puoiPrendere = false;
             interfaccia.animazioneButta(carteMano[interfaccia.scelta].img);
             Thread.Sleep(670);
             interfaccia.terminaAnimazione();
-            interfaccia.visualizzaTurno(false);
+            interfaccia.visualizzaTurno(1);
             Carta temp = carteMano[interfaccia.scelta];
             //rimuovo carta scelta dal vettore di carte mie
             carteMano[interfaccia.scelta] = null;
@@ -173,7 +173,9 @@ namespace briscolottoP2P
 
             //ora aspetto che l'altro giocatore mi mandi la sua carta giocata
             //ricevo la carta giocata dal secondo giocatore
+            interfaccia.visualizzaTurno(2);
             Carta giocata = ricezione.waitCartaGiocata();
+            interfaccia.visualizzaTurno(1);
             giocata = mazzo.completaCarta(giocata);
             //aggiungo anche io la carta del destinatario nel tavolo in modo da averlo sincronizzato
             carteTavolo.Add(giocata);
@@ -223,20 +225,22 @@ namespace briscolottoP2P
                 return;
             }
             //ricevo la carta giocata dal primo giocatore
-            Carta giocata = ricezione.waitCartaGiocata();
+            interfaccia.visualizzaTurno(2);
+            Carta giocata = ricezione.waitCartaGiocata(); 
+            interfaccia.visualizzaTurno(1);
             giocata = mazzo.completaCarta(giocata);
             //aggiungo anche io la carta del destinatario nel tavolo in modo da averlo sincronizzato
             carteTavolo.Add(giocata);
             interfaccia.aggiornaCarte();
             //faccio scegliere la carta all'utente
             interfaccia.puoiPrendere = true;
-            interfaccia.visualizzaTurno(true);
+            interfaccia.visualizzaTurno(0);
             while (interfaccia.scelta == -1) ;
             interfaccia.puoiPrendere = false;
             interfaccia.animazioneButta(carteMano[interfaccia.scelta].img);
             Thread.Sleep(670);
             interfaccia.terminaAnimazione();
-            interfaccia.visualizzaTurno(false);
+            interfaccia.visualizzaTurno(1);
             Carta temp = carteMano[interfaccia.scelta];
             //rimuovo carta scelta dal vettore di carte mie
             carteMano[interfaccia.scelta] = null;

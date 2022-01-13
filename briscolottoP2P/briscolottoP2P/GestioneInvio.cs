@@ -47,7 +47,7 @@ namespace briscolottoP2P
                 int i = 0;
                 while (i < 21)
                 {
-                    Thread.Sleep(200);
+                    Thread.Sleep(20000);
                     if (gestioneBriscola.statoConnessione > 1)
                         break;
                     else if (gestioneBriscola.statoConnessione == 0)
