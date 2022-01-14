@@ -98,6 +98,7 @@
             <Image x:Name="logo" Height="122" Canvas.Left="123" Width="441" Source="https://raw.githubusercontent.com/R0SsAN/briscolottoP2P/main/img_carte/risultato/logo.png" Canvas.Top="5"/>
             <Label x:Name="nick" Content="Nickname:" Canvas.Left="125" Canvas.Top="195" RenderTransformOrigin="0.289,-0.5" Height="40" Width="146" FontSize="25" FontFamily="Bauhaus 93"/>
             <Label x:Name="ip" Content="IP Avversario" Canvas.Left="413" Canvas.Top="195" RenderTransformOrigin="0.289,-0.5" Height="40" Width="162" FontSize="25" FontFamily="Bauhaus 93"/>
+            <Label x:Name="lPunti" Content="" Canvas.Left="475" Canvas.Top="464" RenderTransformOrigin="0.289,-0.5" Height="40" Width="146" FontSize="25" FontFamily="Bauhaus 93"/>
         </Canvas>
         <Label x:Name="lEsito" Content="Hai vinto la mano!" HorizontalAlignment="Left" Margin="70,89,0,0" VerticalAlignment="Top" Height="45" Width="224" FontSize="25" Foreground="#FFE00303" FontWeight="Bold" Visibility="Hidden"/>
     </Grid>

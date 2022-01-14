@@ -162,14 +162,14 @@ namespace briscolottoP2P
             }
         }
 
-        public void visualizzaRisultato(int a)
+        public void visualizzaRisultato(int a, int punti)
         {
             // usiamo la variabile a per determinare il risultato della partita 
             // 1 --> vinto
             // 0 --> pareggio
             // -1 --> perso
             if (!CheckAccess())
-                Dispatcher.Invoke(() => { visualizzaRisultato(a); });
+                Dispatcher.Invoke(() => { visualizzaRisultato(a, punti); });
             else
             {
                 if (a == 1)
@@ -188,6 +188,8 @@ namespace briscolottoP2P
                     imgRisultato.Visibility = Visibility.Visible;
                 }
                 bNuova.Visibility = Visibility.Visible;
+                lPunti.Content = "Punti: " + punti.ToString();
+                lPunti.Visibility = Visibility.Visible;
             }
         }
 
@@ -304,6 +306,7 @@ namespace briscolottoP2P
             Invisibile();
             ridimensiona(false);
             //resetto la ricezione in modo da creare un nuovo thread per la nuova partita
+            lPunti.Visibility = Visibility.Hidden;
             ricezione = new GestioneRicezione();
             ricezione.startaThread();
             //resetto anche la gestione partita

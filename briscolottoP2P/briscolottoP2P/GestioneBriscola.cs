@@ -158,18 +158,20 @@ namespace briscolottoP2P
             interfaccia.visualizzaTurno(0);
             while (interfaccia.scelta == -1) ;
             interfaccia.puoiPrendere = false;
-            interfaccia.animazioneButta(carteMano[interfaccia.scelta].img);
-            Thread.Sleep(670);
-            interfaccia.terminaAnimazione();
-            interfaccia.visualizzaTurno(1);
+
             Carta temp = carteMano[interfaccia.scelta];
             //rimuovo carta scelta dal vettore di carte mie
             carteMano[interfaccia.scelta] = null;
+            interfaccia.aggiornaCarte();
+            interfaccia.animazioneButta(temp.img);
+            Thread.Sleep(670);
+            interfaccia.terminaAnimazione();
+            interfaccia.visualizzaTurno(1);
             //la carico nel tavolo
             carteTavolo.Add(temp);
+            interfaccia.aggiornaCarte();
             //la invio all'altro giocatore in modo da sincronizzarsi
             invio.inviaCartaGiocata(temp);
-            interfaccia.aggiornaCarte();
 
             //ora aspetto che l'altro giocatore mi mandi la sua carta giocata
             //ricevo la carta giocata dal secondo giocatore
@@ -251,19 +253,22 @@ namespace briscolottoP2P
             interfaccia.visualizzaTurno(0);
             while (interfaccia.scelta == -1) ;
             interfaccia.puoiPrendere = false;
-            interfaccia.animazioneButta(carteMano[interfaccia.scelta].img);
-            Thread.Sleep(670);
-            interfaccia.terminaAnimazione();
-            interfaccia.visualizzaTurno(1);
+
             Carta temp = carteMano[interfaccia.scelta];
             //rimuovo carta scelta dal vettore di carte mie
             carteMano[interfaccia.scelta] = null;
+            interfaccia.aggiornaCarte();
+            interfaccia.animazioneButta(temp.img);
+            Thread.Sleep(670);
+            interfaccia.terminaAnimazione();
+            interfaccia.visualizzaTurno(1);
+            
             //la carico nel tavolo
             carteTavolo.Add(temp);
+            interfaccia.aggiornaCarte();
             //la invio all'altro giocatore in modo da sincronizzarsi
             invio.inviaCartaGiocata(temp);
-            interfaccia.aggiornaCarte();
-            interfaccia.aggiornaCarte();
+           
             //ora devo vedere chi ha vinto o perso la giocata
             string esito = calcoloVincitaPerdita();
 
@@ -373,17 +378,17 @@ namespace briscolottoP2P
             if (temp > 60)
             {
                 interfaccia.invisibileTutto();
-                interfaccia.visualizzaRisultato(1);
+                interfaccia.visualizzaRisultato(1, temp);
             }
             else if (temp < 60)
             {
                 interfaccia.invisibileTutto();
-                interfaccia.visualizzaRisultato(-1);
+                interfaccia.visualizzaRisultato(-1, temp);
             }
             else
             {
                 interfaccia.invisibileTutto();
-                interfaccia.visualizzaRisultato(0);
+                interfaccia.visualizzaRisultato(0, temp);
             }
         }
         public int getNCarteMano()
